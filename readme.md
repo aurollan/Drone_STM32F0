@@ -1,5 +1,5 @@
 # Tutorial
-Welcome to this tutorial on How to build a drone using stm32f3 (ARM Cortex M4).
+Welcome to this tutorial on How to build a drone using stm32f0 (ARM Cortex M0).
 At the end the drone will by driven by a simple Bluetooth connection with the 
 computer.
 
