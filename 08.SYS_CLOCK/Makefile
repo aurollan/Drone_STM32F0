@@ -13,7 +13,7 @@ CORTEX_M = 0
 CORE = CM$(CORTEX_M)
 
 # Project name
-NAME = SYSCLOCK-$(CORE)
+NAME = SYS_CLOCK-$(CORE)
 
 # Compiler, Linker & Debugger
 CC = arm-none-eabi-gcc
@@ -23,28 +23,44 @@ DB = arm-none-eabi-gdb
 # Launch debug from Linux (Ubuntu/Debian)
 LDB = gdb-multiarch
 
-# STM32 library path
-DIR_INC = inc
-DIR_ASM = ../03.STARTUP_FILE
+# Include directories
+# For our own include files
+DIR_INC_LOCAL = inc
+# For system_stm32f0xx.h file and stm32f0xx.h file
+DIR_INC_DEVICE = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/CMSIS/Device/ST/STM32F0xx/Include
+# For ARM Cortex M0 header files
+DIR_INC_CORTEX = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/CMSIS/Include
+# For Std library header files
+DIR_INC_STD_LIB = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/STM32F0xx_StdPeriph_Driver/inc
+
+# Start up file directory
+DIR_ASM = asm
+ 
+# Useless now
 DIR_SRC = src
+
+# Object files directory
 DIR_OBJ = obj
 
-# For library source file
-vpath %.c ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/STM32F0xx_StdPeriph_Driver/src/
+# VPATH name to find *.c files
 # For system_stm32f0xx.c file
-vpath %.c ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/CMSIS/Device/ST/STM32F0xx/Source/Templates/TrueSTUDIO/
-# For ARM Cortex M0 header file
-vpath %.h ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/CMSIS/Include/
-# For library header file
-vpath %.h ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/STM32F0xx_StdPeriph_Driver/inc/
+vpath %.c ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/CMSIS/Device/ST/STM32F0xx/Source/Templates/
+# For Std library source file
+vpath %.c ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/STM32F0xx_StdPeriph_Driver/src/
+# For our own source files
+vpath %.c src/
 
 ################################################################################
 #							PROJECT FILES									   #
 ################################################################################
 
+# Start up file name
 FILE_ASM = startup_stm32f030x8.s
 
+# Files used for building project
 FILE_SRC = main.c \
+           stm32f0xx_rcc.c \
+           stm32f0xx_gpio.c \
 		   system_stm32f0xx.c \
 
 FILE_OBJ = $(FILE_SRC:.c=.o)
@@ -52,7 +68,9 @@ FILE_OBJ += $(FILE_ASM:.s=.o)
 
 OBJ = $(addprefix $(DIR_OBJ)/, $(FILE_OBJ))
 ASM = $(addprefix $(DIR_ASM)/, $(FILE_ASM))
-SRC = $(addprefix $(DIR_SRC)/, $(FILE_SRC))
+# We are using vpath now so we don't have to bother with file path for 
+# *.c and *.h
+# SRC = $(addprefix $(DIR_SRC)/, $(FILE_SRC))
 
 ################################################################################
 #							GCC COMPILATION FLAGS							   #
@@ -68,10 +86,19 @@ DBG_FLAGS = -g3
 FP_FLAGS =  -mfloat-abi=soft 
 
 # Include path flags
-INC_FLAGS = $(addprefix -I , $(DIR_INC))
+INC_LOCAL_FLAG = $(addprefix -I , $(DIR_INC_LOCAL))
+INC_DEVICE_FLAG = $(addprefix -I , $(DIR_INC_DEVICE))
+INC_CORTEX_FLAG = $(addprefix -I , $(DIR_INC_CORTEX))
+INC_STD_LIB_FLAG = $(addprefix -I , $(DIR_INC_STD_LIB))
+
+# All flags together
+INC_FLAGS = $(INC_LOCAL_FLAG) $(INC_DEVICE_FLAG) $(INC_CORTEX_FLAG) \
+			$(INC_STD_LIB_FLAG)
 
 # DEFINE/Macro flags
-DM_FLAGS =  -DSTM32F030x8 -DUSE_FULL_ASSERT
+DM_FLAGS = -DSTM32F030X8
+# Commented for now as we don't use assert yet 
+# DM_FLAGS += -DUSE_FULL_ASSERT
 
 # Compiling Optimization flags (add -0s for best optimization flag)
 CO_FLAGS = -ffunction-sections -fdata-sections
@@ -81,7 +108,7 @@ WRN_FLAGS = -Werror -Wall -Wextra
 
 # All flags for GCC compiling step
 GCC_FLAGS = $(ARCH_FLAGS) $(DBG_FLAGS) $(FP_FLAGS) $(INC_FLAGS) \
-		  $(DM_FLAGS) $(CO_FLAGS) $(WRN_FLAGS)
+		  	$(DM_FLAGS) $(CO_FLAGS) $(WRN_FLAGS)
 
 ################################################################################
 #								LINKING										   #
@@ -107,11 +134,11 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(LD) $^ $(LD_FLAGS) -o $@
-	@echo "\033[33;32m=== Compilation $(NAME)...\t\t\tDONE\033[0m"
+	@echo "\033[33;32m=== Linking $(NAME)...\t\t\tDONE\033[0m"
 	@echo "---------------------------------------------------------------------"
 
 # Build *.c file
-$(DIR_OBJ)/%.o: $(DIR_SRC)/%.c
+$(DIR_OBJ)/%.o: %.c
 	@mkdir -p obj
 	$(CC) $(GCC_FLAGS) -o $@ -c $<
 	@echo "\033[0;32m [OK] \033[0m       \033[0;33m Compiling:\033[0m" $<
