@@ -32,6 +32,8 @@ DIR_INC_DEVICE = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/CMSIS/De
 DIR_INC_CORTEX = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/CMSIS/Include
 # For Std library header files
 DIR_INC_STD_LIB = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/STM32F0xx_StdPeriph_Driver/inc
+# For Std library stm32f0xx_conf.h header files (if you want to use FULL_ASSERT)
+DIR_INC_STD_LIB_CONF = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Projects/STM32F0xx_StdPeriph_Templates
 
 # Start up file directory
 DIR_ASM = asm
@@ -90,15 +92,18 @@ INC_LOCAL_FLAG = $(addprefix -I , $(DIR_INC_LOCAL))
 INC_DEVICE_FLAG = $(addprefix -I , $(DIR_INC_DEVICE))
 INC_CORTEX_FLAG = $(addprefix -I , $(DIR_INC_CORTEX))
 INC_STD_LIB_FLAG = $(addprefix -I , $(DIR_INC_STD_LIB))
+INC_STD_LIB_CONF_FLAG = $(addprefix -I , $(DIR_INC_STD_LIB_CONF))
 
 # All flags together
 INC_FLAGS = $(INC_LOCAL_FLAG) $(INC_DEVICE_FLAG) $(INC_CORTEX_FLAG) \
-			$(INC_STD_LIB_FLAG)
+			$(INC_STD_LIB_FLAG) $(INC_STD_LIB_CONF_FLAG)
 
 # DEFINE/Macro flags
 DM_FLAGS = -DSTM32F030X8
-# Commented for now as we don't use assert yet 
-# DM_FLAGS += -DUSE_FULL_ASSERT
+
+# Both following define come together (for using FULL_ASSERT)
+DM_FLAGS += -DUSE_FULL_ASSERT
+DM_FLAGS += -DUSE_STDPERIPH_DRIVER
 
 # Compiling Optimization flags (add -0s for best optimization flag)
 CO_FLAGS = -ffunction-sections -fdata-sections
@@ -121,7 +126,7 @@ LO_FLAGS = --gc-sections
 MAP_FLAGS = -Map=$(NAME).map
 
 # Linking Script flags
-LS_FLAGS = -T ld_scripts/STM32F030R8Tx_FLASH.ld
+LS_FLAGS = -T ld_script/STM32F030R8Tx_FLASH.ld
 
 # All flags for LD linking step
 LD_FLAGS = $(LS_FLAGS) $(LO_FLAGS) $(MAP_FLAGS)
