@@ -56,8 +56,8 @@ vpath %.c src/
 #							PROJECT FILES									   #
 ################################################################################
 
-# Start up file name
-FILE_ASM = startup_stm32f030x8.s
+# Start up file name (I have commented a line so I made a local copy)
+FILE_ASM = startup_stm32f030.s
 
 # Files used for building project
 FILE_SRC = main.c \
