@@ -35,13 +35,13 @@ DIR_INC_STD_LIB = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/STM32F0
 # For Std library stm32f0xx_conf.h header files (if you want to use FULL_ASSERT)
 DIR_INC_STD_LIB_CONF = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Projects/STM32F0xx_StdPeriph_Templates
 
-# Start up file directory (I have commented a line so I made a local copy)
-DIR_ASM = asm
- 
-# Useless now
-DIR_SRC = src
+# Start up file repository (I have commented a line so I made a local copy)
+DIR_ASM = ../03.STARTUP_FILE
 
-# Object files directory
+# Linker script file repository
+DIR_LKS = ../02.LINKER_SCRIPT
+
+# Object files repository
 DIR_OBJ = obj
 
 # VPATH name to find *.c files
@@ -58,6 +58,9 @@ vpath %.c src/
 
 # Start up file name (I have commented a line so I made a local copy)
 FILE_ASM = startup_stm32f030.s
+
+# Linker script file name (I have commented a line so I made a local copy)
+FILE_LKS = STM32F030R8Tx_FLASH.ld
 
 # Files used for building project
 FILE_SRC = main.c \
@@ -126,7 +129,7 @@ LO_FLAGS = --gc-sections
 MAP_FLAGS = -Map=$(NAME).map
 
 # Linking Script file (I have commented 3 line a the end so I made a local copy)
-LS_FLAGS = -T ld_script/STM32F030R8Tx_FLASH.ld
+LS_FLAGS = -T $(DIR_LKS)/$(FILE_LKS)
 
 # All flags for LD linking step
 LD_FLAGS = $(LS_FLAGS) $(LO_FLAGS) $(MAP_FLAGS)
@@ -164,7 +167,7 @@ launch:
 clean: 
 	@rm -rf *.map
 	@rm -rf obj
-	@echo "\033[33;32m=== Cleaning project $(DIR_OBJ) directory and $(NAME).map...\t\tDONE\033[0m"
+	@echo "\033[33;32m=== Cleaning project $(DIR_OBJ) repository and $(NAME).map...\t\tDONE\033[0m"
 
 # Delete all intermediate files and executable file
 fclean: clean
