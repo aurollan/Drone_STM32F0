@@ -23,7 +23,7 @@ DB = arm-none-eabi-gdb
 # Launch debug from Linux (Ubuntu/Debian)
 LDB = gdb-multiarch
 
-# Include directories
+# Include directories given to GCC
 # For our own include files
 DIR_INC_LOCAL = inc
 # For system_stm32f0xx.h file and stm32f0xx.h file
@@ -35,7 +35,7 @@ DIR_INC_STD_LIB = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/STM32F0
 # For Std library stm32f0xx_conf.h header files (if you want to use FULL_ASSERT)
 DIR_INC_STD_LIB_CONF = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Projects/STM32F0xx_StdPeriph_Templates
 
-# Start up file directory
+# Start up file directory (I have commented a line so I made a local copy)
 DIR_ASM = asm
  
 # Useless now
@@ -125,7 +125,7 @@ LO_FLAGS = --gc-sections
 # Map File flags
 MAP_FLAGS = -Map=$(NAME).map
 
-# Linking Script flags
+# Linking Script file (I have commented 3 line a the end so I made a local copy)
 LS_FLAGS = -T ld_script/STM32F030R8Tx_FLASH.ld
 
 # All flags for LD linking step
