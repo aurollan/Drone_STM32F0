@@ -1,41 +1,73 @@
 #include "../inc/dronef0_uart.h"
 
-int USART_initialize()
+
+static void GPIOA_initialize()
 {
-    int ret;
     GPIO_InitTypeDef GPIOA_init;
 
-    ret = 0;
-    memset(&GPIOA_init, 0, sizeof(GPIO_InitTypeDef));
+    GPIO_StructInit(&GPIOA_init);
 
     /* 
-     * Enabling clocks
-     *
+     * Enabling clock
      * GPIOA on AHBENR
-     * USART1 on APB2ENR
      */
     RCC_AHBPeriphClockCmd(RCC_AHBENR_GPIOAEN, ENABLE);
-    RCC_APB2PeriphClockCmd(RCC_APB2ENR_USART1EN, ENABLE);
 
     /*
-     * AF = 1
-     * GPIOA0 = USART1_CTS
-     * GPIOA1 = USART1_RTS
-     * GPIOA2 = USART1_TX
-     * GPIOA3 = USART1_RX
-     * GPIOA4 = USART1_CK
+     * GPIOA0 AF = USART1_CTS => unused (for rs-232)
+     * GPIOA1 AF = USART1_RTS => unused (for rs-232)
+     * GPIOA2 AF = USART1_TX  => used
+     * GPIOA3 AF = USART1_RX  => used
+     * GPIOA4 AF = USART1_CK  => unused (no synchronous UART)
      */
 
-    GPIOA_init.GPIO_Mode = GPIO_Mode_AF;
+    GPIOA_init.GPIO_Mode  = GPIO_Mode_AF;
     GPIOA_init.GPIO_OType = GPIO_OType_PP;
     GPIOA_init.GPIO_Speed = GPIO_Speed_Level_3;
-    GPIOA_init.GPIO_PuPd = GPIO_PuPd_UP;
-    GPIOA_init.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_3;
+    GPIOA_init.GPIO_PuPd  = GPIO_PuPd_UP;
+    GPIOA_init.GPIO_Pin   = GPIO_Pin_2 | GPIO_Pin_3;
 
     /* Init GPIOA fo UART */
     GPIO_Init(GPIOA, &GPIOA_init);
 
+    /*
+     * Alternate Function = 1
+     * Note That we don't use the same Pin Macro
+     */
+    GPIO_PinAFConfig(GPIOA, GPIO_Pin_2 | GPIO_Pin_3, GPIO_AF_1);
+}
+
+
+void USART1_initialize()
+{
+    USART_InitTypeDef UART1_init;
+
+    USART_StructInit(&UART1_init);
+
+    /* 
+     * Enabling clock
+     * USART1 on APB2ENR
+     */
+    RCC_APB2PeriphClockCmd(RCC_APB2ENR_USART1EN, ENABLE);
+
+
     /* Init UART */
+    UART1_init.USART_BaudRate = 9600; //default from structInit func is 9600
+    UART1_init.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    UART1_init.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+    UART1_init.USART_Parity = USART_Parity_Even;
+    UART1_init.USART_StopBits = USART_StopBits_1;
+    UART1_init.USART_WordLength = USART_WordLength_8b;
+
     /* We want Interruption and maybe DMA */
-    return (ret);
+    USART_Init(USART1, &UART1_init);
+    USART_Cmd(USART1, ENABLE);
+}
+
+void communication_initialize() 
+{
+    /* Setting up GPIO */
+    GPIOA_initialize();
+    /* Setting up USART1 */
+    USART1_initialize();
 }
