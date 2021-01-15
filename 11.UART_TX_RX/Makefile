@@ -13,7 +13,7 @@ CORTEX_M = 0
 CORE = CM$(CORTEX_M)
 
 # Project name
-NAME = SYS_CLOCK-$(CORE)
+NAME = COM-$(CORE)
 
 # Compiler, Linker & Debugger
 CC = arm-none-eabi-gcc
@@ -64,8 +64,10 @@ FILE_LKS = STM32F030R8Tx_FLASH.ld
 
 # Files used for building project
 FILE_SRC = main.c \
+		   dronef0_uart.c \
            stm32f0xx_rcc.c \
            stm32f0xx_gpio.c \
+           stm32f0xx_usart.c \
 		   system_stm32f0xx.c \
 
 FILE_OBJ = $(FILE_SRC:.c=.o)
@@ -141,7 +143,7 @@ LD_FLAGS = $(LS_FLAGS) $(LO_FLAGS) $(MAP_FLAGS)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(LD) $^ $(LD_FLAGS) -o $@
+	$(LD) $^ -o $@ $(LD_FLAGS) -lgcc
 	@echo "\033[33;32m=== Linking $(NAME)...\t\t\tDONE\033[0m"
 	@echo "---------------------------------------------------------------------"
 
