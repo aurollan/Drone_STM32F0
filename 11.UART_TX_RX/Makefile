@@ -41,6 +41,9 @@ DIR_ASM = ../03.STARTUP_FILE
 # Linker script file repository
 DIR_LKS = ../02.LINKER_SCRIPT
 
+# OpenOCD debug script file repository
+DIR_OCD_SCRPT = ../07.SCRIPT
+
 # Object files repository
 DIR_OBJ = obj
 
@@ -133,8 +136,14 @@ MAP_FLAGS = -Map=$(NAME).map
 # Linking Script file (I have commented 3 line a the end so I made a local copy)
 LS_FLAGS = -T $(DIR_LKS)/$(FILE_LKS)
 
+# Linking nano librarie
+LN_FLAGS = --library-path=/usr/lib/arm-none-eabi/newlib/thumb/v6-m/ --library=c_nano
+
+# Linking libgcc.a
+LG_FLAGS = --library-path=/usr/lib/arm-none-eabi/lib --library=gcc
+
 # All flags for LD linking step
-LD_FLAGS = $(LS_FLAGS) $(LO_FLAGS) $(MAP_FLAGS)
+LD_FLAGS = $(LS_FLAGS) $(LO_FLAGS) $(MAP_FLAGS) $(LN_FLAGS) $(LG_FLAGS)
 
 ################################################################################
 #								MAKE RULES									   #
@@ -143,14 +152,14 @@ LD_FLAGS = $(LS_FLAGS) $(LO_FLAGS) $(MAP_FLAGS)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(LD) $^ -o $@ $(LD_FLAGS) -lgcc
+	$(LD) $^ -o $@ $(LD_FLAGS)
 	@echo "\033[33;32m=== Linking $(NAME)...\t\t\tDONE\033[0m"
 	@echo "---------------------------------------------------------------------"
 
 # Build *.c file
 $(DIR_OBJ)/%.o: %.c
 	@mkdir -p obj
-	$(CC) $(GCC_FLAGS) -o $@ -c $<
+	$(CC) $(GCC_FLAGS) -o $@ -c $< --save-temps
 	@echo "\033[0;32m [OK] \033[0m       \033[0;33m Compiling:\033[0m" $<
 	@echo "---------------------------------------------------------------------"
 
@@ -163,7 +172,7 @@ $(DIR_OBJ)/%.o: $(DIR_ASM)/%.s
 
 # Linux (Debian) flash and launch debug session
 launch:
-	@$(LDB) -q $(NAME) -x openocd.gdb
+	@$(LDB) -q $(NAME) -x $(DIR_OCD_SCRPT)/openocd.gdb
 
 # Delete all intermediate files
 clean: 
