@@ -55,7 +55,7 @@ void USART1_initialize()
     UART1_init.USART_BaudRate = 9600; //default from structInit func is 9600
     UART1_init.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
     UART1_init.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-    UART1_init.USART_Parity = USART_Parity_Even;
+    UART1_init.USART_Parity = USART_Parity_No;
     UART1_init.USART_StopBits = USART_StopBits_1;
     UART1_init.USART_WordLength = USART_WordLength_8b;
 

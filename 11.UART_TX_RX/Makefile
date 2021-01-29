@@ -140,7 +140,7 @@ LS_FLAGS = -T $(DIR_LKS)/$(FILE_LKS)
 LN_FLAGS = --library-path=/usr/lib/arm-none-eabi/newlib/thumb/v6-m/ --library=c_nano
 
 # Linking libgcc.a
-LG_FLAGS = --library-path=/usr/lib/arm-none-eabi/lib --library=gcc
+LG_FLAGS = --library-path=/usr/lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/ --library=gcc
 
 # All flags for LD linking step
 LD_FLAGS = $(LS_FLAGS) $(LO_FLAGS) $(MAP_FLAGS) $(LN_FLAGS) $(LG_FLAGS)
@@ -159,7 +159,7 @@ $(NAME): $(OBJ)
 # Build *.c file
 $(DIR_OBJ)/%.o: %.c
 	@mkdir -p obj
-	$(CC) $(GCC_FLAGS) -o $@ -c $< --save-temps
+	$(CC) $(GCC_FLAGS) -o $@ -c $<
 	@echo "\033[0;32m [OK] \033[0m       \033[0;33m Compiling:\033[0m" $<
 	@echo "---------------------------------------------------------------------"
 
