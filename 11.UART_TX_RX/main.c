@@ -7,13 +7,13 @@ void assert_failed(uint8_t* file, uint32_t line) {
 }
 
 int main(void) {
-    uint16_t character;
-
     communication_initialize();
     while (1)
     {
-        character = USART_ReceiveData(USART1);
-        USART_SendData(USART1, character);
+        //while (USART_GetFlagStatus(USART2, USART_FLAG_RXNE) == SET);
+        //character = USART_ReceiveData(USART2);
+        while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
+        USART_SendData(USART2, 'c');
     }
     return (0);
 }
