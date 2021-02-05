@@ -25,7 +25,7 @@ static void GPIOA_initialize()
     GPIOA_init.GPIO_OType = GPIO_OType_PP;
     GPIOA_init.GPIO_Speed = GPIO_Speed_Level_3;
     GPIOA_init.GPIO_PuPd  = GPIO_PuPd_UP;
-    GPIOA_init.GPIO_Pin   = GPIO_Pin_2 | GPIO_Pin_3;
+    GPIOA_init.GPIO_Pin   = GPIO_Pin_9 | GPIO_Pin_10;
 
     /* Init GPIOA fo UART */
     GPIO_Init(GPIOA, &GPIOA_init);
@@ -34,41 +34,42 @@ static void GPIOA_initialize()
      * Alternate Function = 1
      * Note That we don't use the same Pin Macro
      */
-    GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_1);
-    GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_1);
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource9, GPIO_AF_1);
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF_1);
 }
 
 
-void USART2_initialize()
+void USART1_initialize()
 {
-    USART_InitTypeDef UART2_init;
+    USART_InitTypeDef UART1_init;
 
-    USART_StructInit(&UART2_init);
+    USART_StructInit(&UART1_init);
 
     /* 
      * Enabling clock
-     * USART2 on APB2ENR
+     * USART1 on APB2ENR
      */
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+    //RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
 
 
     /* Init UART */
-    UART2_init.USART_BaudRate = 9600; //default from structInit func is 9600
-    UART2_init.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-    UART2_init.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-    UART2_init.USART_Parity = USART_Parity_No;
-    UART2_init.USART_StopBits = USART_StopBits_1;
-    UART2_init.USART_WordLength = USART_WordLength_8b;
+    UART1_init.USART_BaudRate = 9600; //default from structInit func is 9600
+    UART1_init.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    UART1_init.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+    UART1_init.USART_Parity = USART_Parity_No;
+    UART1_init.USART_StopBits = USART_StopBits_1;
+    UART1_init.USART_WordLength = USART_WordLength_8b;
 
     /* We want Interruption and maybe DMA */
-    USART_Init(USART2, &UART2_init);
-    USART_Cmd(USART2, ENABLE);
+    USART_Init(USART1, &UART1_init);
+    USART_Cmd(USART1, ENABLE);
 }
 
 void communication_initialize() 
 {
     /* Setting up GPIO */
     GPIOA_initialize();
-    /* Setting up USART2 */
-    USART2_initialize();
+    /* Setting up USART1 */
+    USART1_initialize();
 }
