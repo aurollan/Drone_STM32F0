@@ -12,7 +12,7 @@ int main(void) {
     {
         //while (USART_GetFlagStatus(USART2, USART_FLAG_RXNE) == SET);
         //character = USART_ReceiveData(USART2);
-        while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
+        while (USART_GetFlagStatus(USART2, USART_FLAG_TC) == RESET);
         USART_SendData(USART2, 'c');
     }
     return (0);

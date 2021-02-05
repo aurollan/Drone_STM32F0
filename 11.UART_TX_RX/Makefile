@@ -13,7 +13,7 @@ CORTEX_M = 0
 CORE = CM$(CORTEX_M)
 
 # Project name
-NAME = COM-$(CORE)
+NAME = COM-$(CORE).elf
 
 # Compiler, Linker & Debugger
 CC = arm-none-eabi-gcc
