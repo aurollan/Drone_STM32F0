@@ -19,7 +19,7 @@ static void GPIOB_initialize()
 
     GPIOB_init.GPIO_Mode  = GPIO_Mode_AF;
     GPIOB_init.GPIO_OType = GPIO_OType_PP;
-    GPIOB_init.GPIO_Speed = GPIO_Speed_Level_3;
+    GPIOB_init.GPIO_Speed = GPIO_Speed_Level_2;
     GPIOB_init.GPIO_PuPd  = GPIO_PuPd_UP;
     GPIOB_init.GPIO_Pin   = GPIO_Pin_6 | GPIO_Pin_7;
 
@@ -53,7 +53,7 @@ static void GPIOA_initialize()
 
     GPIOA_init.GPIO_Mode  = GPIO_Mode_AF;
     GPIOA_init.GPIO_OType = GPIO_OType_PP;
-    GPIOA_init.GPIO_Speed = GPIO_Speed_Level_3;
+    GPIOA_init.GPIO_Speed = GPIO_Speed_Level_2;
     GPIOA_init.GPIO_PuPd  = GPIO_PuPd_UP;
     GPIOA_init.GPIO_Pin   = GPIO_Pin_2 | GPIO_Pin_3;
 

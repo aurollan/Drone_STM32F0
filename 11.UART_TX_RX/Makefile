@@ -13,7 +13,7 @@ CORTEX_M = 0
 CORE = CM$(CORTEX_M)
 
 # Project name
-NAME = COM-$(CORE)
+NAME = COM-$(CORE).elf
 
 # Compiler, Linker & Debugger
 CC = arm-none-eabi-gcc
@@ -70,6 +70,7 @@ FILE_SRC = main.c \
 		   dronef0_uart.c \
            stm32f0xx_rcc.c \
            stm32f0xx_gpio.c \
+		   stm32f0xx_flash.c \
            stm32f0xx_usart.c \
 		   system_stm32f0xx.c \
 
