@@ -23,6 +23,9 @@ DB = arm-none-eabi-gdb
 # Launch debug from Linux (Ubuntu/Debian)
 LDB = gdb-multiarch
 
+# Flahs utility
+FLASH_TOOL = openocd
+
 # Include directories given to GCC
 # For our own include files
 DIR_INC_LOCAL = inc
@@ -42,7 +45,7 @@ DIR_ASM = ../03.STARTUP_FILE
 DIR_LKS = ../02.LINKER_SCRIPT
 
 # OpenOCD debug script file repository
-DIR_OCD_SCRPT = ../07.SCRIPT
+DIR_OCD_SCRIPT = ../07.SCRIPT
 
 # Object files repository
 DIR_OBJ = obj
@@ -172,8 +175,11 @@ $(DIR_OBJ)/%.o: $(DIR_ASM)/%.s
 	@echo "---------------------------------------------------------------------"
 
 # Linux (Debian) flash and launch debug session
-launch:
-	@$(LDB) -q $(NAME) -x $(DIR_OCD_SCRPT)/openocd.gdb
+debug:
+	@$(LDB) -q $(NAME) -x $(DIR_OCD_SCRIPT)/openocd.gdb
+
+flash:
+	@$(FLASH_TOOL) -f interface/stlink -v2.cfg -f target/stm32f0x.cfg -c "program $(NAME) verify reset exit"
 
 # Delete all intermediate files
 clean: 

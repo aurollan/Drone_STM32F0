@@ -18,7 +18,7 @@ int main(void) {
     /* Switching systemclock to HSI clock */
     RCC_SYSCLKConfig(RCC_SYSCLKSource_HSI);
     /* Checking if we got the right clock source */ 
-    if (RCC_GetSYSCLKSource() == 0x00) {
+    if (RCC_GetSYSCLKSource() == RCC_CFGR_SW_HSI) {
         /* Everything if OK */
     }
     /* Setting AHB periph clock to HSI speed */
