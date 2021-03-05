@@ -1,5 +1,62 @@
 #include "../inc/dronef0_uart.h"
 
+/**
+ * @brief   Check if a uart communication error occured
+ */
+uint32_t uart_error_occur(USART_TypeDef* USARTx)
+{
+    uint32_t usart_isr_error;
+
+    usart_isr_error = 0;
+    if (SET ==USART_GetFlagStatus(USARTx, USART_FLAG_ORE))
+    {
+        usart_isr_error |= USART_FLAG_ORE;
+    }
+    if (SET ==USART_GetFlagStatus(USARTx, USART_FLAG_NE))
+    {
+        usart_isr_error |= USART_FLAG_NE;
+    }
+    if (SET ==USART_GetFlagStatus(USARTx, USART_FLAG_FE))
+    {
+        usart_isr_error |= USART_FLAG_FE;
+    }
+    if (SET ==USART_GetFlagStatus(USARTx, USART_FLAG_PE))
+    {
+        usart_isr_error |= USART_FLAG_PE;
+    }
+    return (usart_isr_error);
+}
+
+/**
+ * @brief   Send data stream through USART communication
+ * @param   USARTx          USART_TypeDef*. USART channel selected
+ * @param   data            uint8_t*.       Memory to send data from
+ * @param   len             uint32_t.       Number of data to send
+ * @return  usart_isr_error uint32_t.       Contains only USART ISR register error bits
+ */
+uint32_t uart_send_data(USART_TypeDef* USARTx, uint8_t* data, uint32_t len)
+{
+    uint32_t index;
+    uint32_t usart_isr_error;
+
+    index           = 0;
+    usart_isr_error = 0;
+    while (index < len)
+    {
+        USART_SendData(USARTx, data[index]);
+        usart_isr_error |= uart_error_occur(USARTx);
+        if (usart_isr_error)
+        {
+            break;
+        }
+        index++;
+    }
+    return (usart_isr_error);
+}
+
+/**
+ * @brief   Initialize GPIOB pin to handle USART communication
+ */
 static void GPIOB_initialize()
 {
     GPIO_InitTypeDef GPIOB_init;
@@ -34,6 +91,9 @@ static void GPIOB_initialize()
     GPIO_PinAFConfig(GPIOB, GPIO_PinSource7, GPIO_AF_0);
 }
 
+/**
+ * @brief   Initialize GPIOA pin to handle USART communication
+ */
 static void GPIOA_initialize()
 {
     GPIO_InitTypeDef GPIOA_init;
@@ -68,6 +128,9 @@ static void GPIOA_initialize()
     GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_1);
 }
 
+/**
+ * @brief   Initialize USART2 communication
+ */
 void USART2_initialize()
 {
     USART_InitTypeDef UART2_init;
@@ -94,6 +157,9 @@ void USART2_initialize()
     USART_Cmd(USART2, ENABLE);
 }
 
+/**
+ * @brief   Initialize USART2 communication
+ */
 void USART1_initialize()
 {
     USART_InitTypeDef UART1_init;

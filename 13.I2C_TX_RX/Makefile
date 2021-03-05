@@ -71,9 +71,11 @@ FILE_LKS = STM32F030R8Tx_FLASH.ld
 # Files used for building project
 FILE_SRC = main.c \
 		   dronef0_i2c.c \
+		   dronef0_i2c_rd_wr.c \
 		   dronef0_uart.c \
 		   dronef0_clock.c \
            stm32f0xx_rcc.c \
+           stm32f0xx_i2c.c \
            stm32f0xx_gpio.c \
 		   stm32f0xx_flash.c \
            stm32f0xx_usart.c \
