@@ -13,8 +13,8 @@ static void GPIOB_initialize()
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
 
     /*
-     * GPIOB6 AF = USART1_TX  => available and selected
-     * GPIOB7 AF = USART1_RX  => available and selected
+     * GPIOB6 AF = USART1_TX  => used
+     * GPIOB7 AF = USART1_RX  => used
      */
 
     GPIOB_init.GPIO_Mode  = GPIO_Mode_AF;
@@ -47,8 +47,8 @@ static void GPIOA_initialize()
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
 
     /*
-     * GPIOA14 AF = USART1_TX  => available and selected
-     * GPIOA15 AF = USART1_RX  => available and selected
+     * GPIOA14 AF = USART1_TX  => used
+     * GPIOA15 AF = USART1_RX  => used
      */
 
     GPIOA_init.GPIO_Mode  = GPIO_Mode_AF;
@@ -76,7 +76,7 @@ void USART2_initialize()
 
     /* 
      * Enabling clock
-     * USART2 on APB1ENR
+     * USART2 on APB2ENR
      */
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 
@@ -104,6 +104,7 @@ void USART1_initialize()
      * Enabling clock
      * USART1 on APB2ENR
      */
+    //RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
 
 
