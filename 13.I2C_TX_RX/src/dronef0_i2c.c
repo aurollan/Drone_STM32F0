@@ -67,7 +67,7 @@ void I2C1_initialize()
     /**
      * Setting I2C1 according to our needs
      */
-    I2C2_init.I2C_Ack                 = I2C_Ack_Enable;
+    I2C2_init.I2C_Ack                 = I2C_Ack_Disable;
     I2C2_init.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
     I2C2_init.I2C_AnalogFilter        = I2C_AnalogFilter_Enable;
     I2C2_init.I2C_Mode                = I2C_Mode_I2C;

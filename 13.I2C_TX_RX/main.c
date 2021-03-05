@@ -13,7 +13,6 @@ int main(void) {
 
     /* Evetything went as expected we can setup our peripherals */
     clock_initialize();
-    I2C_IT_T = 0;
     communication_initialize();
     i2c_initialize();
     while (1)
