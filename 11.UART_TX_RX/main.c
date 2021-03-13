@@ -49,9 +49,8 @@ int main(void) {
     communication_initialize();
     while (1)
     {
-        //while (USART_GetFlagStatus(USART2, USART_FLAG_RXNE) == SET);
         //character = USART_ReceiveData(USART2);
-        while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);
+        while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) != SET);
         USART_SendData(USART1, 'c');
 
         flag_status = USART_GetFlagStatus(USART1, USART_FLAG_ORE);
@@ -59,7 +58,7 @@ int main(void) {
         flag_status = USART_GetFlagStatus(USART1, USART_FLAG_FE);
         flag_status = USART_GetFlagStatus(USART1, USART_FLAG_PE);
 
-        while (USART_GetFlagStatus(USART2, USART_FLAG_TC) == RESET);
+        while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) != SET);
         USART_SendData(USART2, 'c');
 
         flag_status = USART_GetFlagStatus(USART2, USART_FLAG_ORE);

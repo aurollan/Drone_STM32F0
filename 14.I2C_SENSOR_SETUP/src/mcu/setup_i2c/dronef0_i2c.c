@@ -42,8 +42,8 @@ static void GPIOB_for_i2c1_initialize()
      * Note That we don't use the same Pin Macro
      * And both pin use the same AF.
      */
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource6,  GPIO_AF_1);
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource7,  GPIO_AF_1);
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource8,  GPIO_AF_1);
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource9,  GPIO_AF_1);
     GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF_1);
     GPIO_PinAFConfig(GPIOB, GPIO_PinSource11, GPIO_AF_1);
 }
@@ -51,12 +51,17 @@ static void GPIOB_for_i2c1_initialize()
 
 void I2C1_initialize()
 {
-    I2C_InitTypeDef I2C2_init;
+    I2C_InitTypeDef I2C1_init;
+
+    /**
+     * Disabling i2c as asked in reference manual
+     */
+    I2C_Cmd(I2C1, DISABLE);
 
     /** 
      * Init struct with default setup
      */
-    I2C_StructInit(&I2C2_init);
+    I2C_StructInit(&I2C1_init);
 
     /**
      * Enabling clock
@@ -67,20 +72,29 @@ void I2C1_initialize()
     /**
      * Setting I2C1 according to our needs
      */
-    I2C2_init.I2C_Ack                 = I2C_Ack_Disable;
-    I2C2_init.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-    I2C2_init.I2C_AnalogFilter        = I2C_AnalogFilter_Enable;
-    I2C2_init.I2C_Mode                = I2C_Mode_I2C;
-    I2C2_init.I2C_Timing              = 0;
-    I2C2_init.I2C_DigitalFilter       = 0;
-    I2C2_init.I2C_OwnAddress1         = 0;
+    I2C1_init.I2C_Ack                 = I2C_Ack_Disable;
+    I2C1_init.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+    I2C1_init.I2C_AnalogFilter        = I2C_AnalogFilter_Enable;
+    I2C1_init.I2C_Mode                = I2C_Mode_I2C;
+    I2C1_init.I2C_DigitalFilter       = 0;
+    I2C1_init.I2C_OwnAddress1         = 0;
+    /**
+     * config tool from reference manual example page 559 
+     * SYSCLOCK = 8 Mhz
+     * PRESC    = 1
+     * SCLL     = 0x13
+     * SCLH     = 0xF
+     * SDADEL   = 0x2
+     * SCLDEL   = 0x4
+     * */
+    I2C1_init.I2C_Timing              = 0x10240F13;
 
-    I2C_Init(I2C2, &I2C2_init);
+    I2C_Init(I2C1, &I2C1_init);
 
     /**
      * Don't forget to enable your i2c too
      */
-    I2C_Cmd(I2C2, ENABLE);
+    I2C_Cmd(I2C1, ENABLE);
 }
 
 

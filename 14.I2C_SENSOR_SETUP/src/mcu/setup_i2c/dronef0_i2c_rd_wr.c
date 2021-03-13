@@ -1,4 +1,5 @@
 #include "dronef0_i2c.h"
+#include "mcu/setup_usart/dronef0_uart.h"
 
 /**
  * @brief   Wait i2c_flag to be set to flag_status 
@@ -116,6 +117,11 @@ uint32_t i2c_read(I2C_TypeDef* I2Cx, uint16_t register_to_read, uint8_t *receive
     i2c_isr_err_occured = 0;
     I2C_TransferHandling(I2Cx, register_to_read, 1, I2C_Generate_Start_Read, I2C_SoftEnd_Mode);
     i2c_isr_err_occured  = I2C_send_data_and_wait(I2Cx, register_to_read);
+    if (i2c_isr_err_occured)
+    {
+        uart_send_data(USART1, (uint8_t*)"ERR ASK READ\n", 12);
+        uart_send_data(USART2, (uint8_t*)"ERR ASK READ\n", 12);
+    }
     if (!i2c_isr_err_occured)
     {
         I2C_TransferHandling(I2Cx, register_to_read, number_of_bytes_to_read, I2C_Generate_Start_Read, I2C_AutoEnd_Mode);
@@ -124,6 +130,8 @@ uint32_t i2c_read(I2C_TypeDef* I2Cx, uint16_t register_to_read, uint8_t *receive
             i2c_isr_err_occured = I2C_receive_data_and_wait(I2Cx, &(received_data[index]));
             if (i2c_isr_err_occured)
             {
+                uart_send_data(USART1, (uint8_t*)"ERR ASK READ\n", 12);
+                uart_send_data(USART2, (uint8_t*)"ERR ASK READ\n", 12);
                 break;
             }
             index++;

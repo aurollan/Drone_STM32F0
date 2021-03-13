@@ -25,30 +25,38 @@ int main(void) {
                 if (i2c_isr_err_occured & I2C_FLAG_BERR)
                 {
                     uart_send_data(USART1, (uint8_t*)"ERR_BERR\n", 9);
+                    uart_send_data(USART2, (uint8_t*)"ERR_BERR\n", 9);
                 }
                 if (i2c_isr_err_occured & I2C_FLAG_BUSY)
                 {
                     uart_send_data(USART1, (uint8_t*)"ERR_BUSY\n", 9);
+                    uart_send_data(USART2, (uint8_t*)"ERR_BUSY\n", 9);
                 }
                 if (i2c_isr_err_occured & I2C_FLAG_ARLO)
                 {
                     uart_send_data(USART1, (uint8_t*)"ERR_ARLO\n", 9);
+                    uart_send_data(USART2, (uint8_t*)"ERR_ARLO\n", 9);
                 }
                 if (i2c_isr_err_occured & I2C_FLAG_OVR)
                 {
                     uart_send_data(USART1, (uint8_t*)"ERR_OVR\n", 8);
+                    uart_send_data(USART2, (uint8_t*)"ERR_OVR\n", 8);
                 }
                 if (i2c_isr_err_occured & I2C_FLAG_TIMEOUT)
                 {
                     uart_send_data(USART1, (uint8_t*)"ERR_TOUT\n", 9);
+                    uart_send_data(USART2, (uint8_t*)"ERR_TOUT\n", 9);
                 }
         }
         else
         {
-            while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);
+            uart_send_data(USART1, (uint8_t*)"OK\n", 3);
+            uart_send_data(USART2, (uint8_t*)"OK\n", 3);
+
+            while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
             USART_SendData(USART1, who_am_i);
 
-            while (USART_GetFlagStatus(USART2, USART_FLAG_TC) == RESET);
+            while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
             USART_SendData(USART2, who_am_i);
         }
     }
