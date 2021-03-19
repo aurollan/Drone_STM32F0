@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <string.h>
 #include "sensor/setup_gy-521.h"
 #include "mcu/setup_usart/dronef0_uart.h"
 #include "mcu/setup_clock/dronef0_clock.h"
@@ -48,16 +49,19 @@ int main(void) {
                     uart_send_data(USART2, (uint8_t*)"ERR_TOUT\n", 9);
                 }
         }
-        else
+        else if (0x68 == who_am_i) // who am i default register value is 0x68
         {
-            uart_send_data(USART1, (uint8_t*)"OK\n", 3);
-            uart_send_data(USART2, (uint8_t*)"OK\n", 3);
-
-            while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
-            USART_SendData(USART1, who_am_i);
-
-            while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
-            USART_SendData(USART2, who_am_i);
+            uart_send_data(USART1, &who_am_i, 1);
+            uart_send_data(USART2, &who_am_i, 1);
+            uart_send_data(USART1, (uint8_t*)"\nOK\n", 4);
+            uart_send_data(USART2, (uint8_t*)"\nOK\n", 4);
+        }
+        else {
+            who_am_i += 48;
+            uart_send_data(USART1, (uint8_t*)"NO ERROR BUT WHO AM I IS : [", 28);
+            uart_send_data(USART1, &who_am_i, 1);
+            uart_send_data(USART1, (uint8_t*)"]\n", 2);
+        
         }
     }
     return (0);

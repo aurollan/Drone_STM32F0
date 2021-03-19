@@ -43,6 +43,7 @@ uint32_t uart_send_data(USART_TypeDef* USARTx, uint8_t* data, uint32_t len)
     usart_isr_error = 0;
     while (index < len)
     {
+        while (USART_GetFlagStatus(USARTx, USART_FLAG_TXE) == RESET);
         USART_SendData(USARTx, data[index]);
         usart_isr_error |= uart_error_occur(USARTx);
         if (usart_isr_error)

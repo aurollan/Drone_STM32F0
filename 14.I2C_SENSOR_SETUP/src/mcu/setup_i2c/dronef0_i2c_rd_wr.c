@@ -39,10 +39,10 @@ uint32_t i2c_error_occur(I2C_TypeDef* I2Cx)
     {
         i2c_isr_err_flags |= I2C_FLAG_BERR;
     }
-    if (SET == I2C_GetFlagStatus(I2Cx, I2C_FLAG_BUSY))
-    {
-        i2c_isr_err_flags |= I2C_FLAG_BUSY;
-    }
+    //if (SET == I2C_GetFlagStatus(I2Cx, I2C_FLAG_BUSY))
+    //{
+    //    i2c_isr_err_flags |= I2C_FLAG_BUSY;
+    //}
     if (SET == I2C_GetFlagStatus(I2Cx, I2C_FLAG_ARLO))
     {
         i2c_isr_err_flags |= I2C_FLAG_ARLO;
@@ -59,7 +59,7 @@ uint32_t i2c_error_occur(I2C_TypeDef* I2Cx)
  * @param   I2Cx   I2C_TypeDef*.   I2C channel selected
  * @return  i2c_isr_err_occured uint32_t. Contains only I2C ISR register error bits
  */
-uint32_t I2C_receive_data_and_wait(I2C_TypeDef* I2Cx, uint8_t* received_data)
+static uint32_t I2C_receive_data_wait(I2C_TypeDef* I2Cx, uint8_t* received_data)
 {
     uint32_t    i2c_isr_err_occured;
 
@@ -82,7 +82,7 @@ uint32_t I2C_receive_data_and_wait(I2C_TypeDef* I2Cx, uint8_t* received_data)
  * @param   I2Cx    I2C_TypeDef*.   I2C channel selected
  * @return  i2c_isr_err_occured uint32_t. Contains only I2C ISR register error bits
  */
-uint32_t I2C_send_data_and_wait(I2C_TypeDef* I2Cx, uint8_t data_to_send)
+static uint32_t I2C_send_data_wait(I2C_TypeDef* I2Cx, uint8_t data_to_send)
 {
     uint32_t    i2c_isr_err_occured;
 
@@ -115,23 +115,27 @@ uint32_t i2c_read(I2C_TypeDef* I2Cx, uint16_t register_to_read, uint8_t *receive
 
     index       = 0;
     i2c_isr_err_occured = 0;
+    uart_send_data(USART1, (uint8_t*)"START READ\n", 11);
+    uart_send_data(USART2, (uint8_t*)"START READ\n", 11);
     I2C_TransferHandling(I2Cx, register_to_read, 1, I2C_Generate_Start_Read, I2C_SoftEnd_Mode);
-    i2c_isr_err_occured  = I2C_send_data_and_wait(I2Cx, register_to_read);
+    i2c_isr_err_occured  = I2C_send_data_wait(I2Cx, register_to_read);
     if (i2c_isr_err_occured)
     {
-        uart_send_data(USART1, (uint8_t*)"ERR ASK READ\n", 12);
-        uart_send_data(USART2, (uint8_t*)"ERR ASK READ\n", 12);
+        uart_send_data(USART1, (uint8_t*)"START READ FAIL\n", 16);
+        uart_send_data(USART2, (uint8_t*)"START READ FAIL\n", 16);
     }
     if (!i2c_isr_err_occured)
     {
+        uart_send_data(USART1, (uint8_t*)"READ RECEIVED\n", 14);
+        uart_send_data(USART2, (uint8_t*)"READ RECEIVED\n", 14);
         I2C_TransferHandling(I2Cx, register_to_read, number_of_bytes_to_read, I2C_Generate_Start_Read, I2C_AutoEnd_Mode);
         while (index < number_of_bytes_to_read)
         {
-            i2c_isr_err_occured = I2C_receive_data_and_wait(I2Cx, &(received_data[index]));
+            i2c_isr_err_occured = I2C_receive_data_wait(I2Cx, &(received_data[index]));
             if (i2c_isr_err_occured)
             {
-                uart_send_data(USART1, (uint8_t*)"ERR ASK READ\n", 12);
-                uart_send_data(USART2, (uint8_t*)"ERR ASK READ\n", 12);
+                uart_send_data(USART1, (uint8_t*)"READ RECEIVED FAIL\n", 19);
+                uart_send_data(USART2, (uint8_t*)"READ RECEIVED FAIL\n", 19);
                 break;
             }
             index++;
@@ -161,11 +165,11 @@ uint32_t i2c_write(I2C_TypeDef* I2Cx, uint8_t register_to_write, uint8_t data_to
     number_of_bytes_to_read  = 1;
     number_of_bytes_to_write = 1;
     I2C_TransferHandling(I2Cx, register_to_write, number_of_bytes_to_read, I2C_Generate_Start_Read, I2C_SoftEnd_Mode);
-    i2c_isr_err_occured = I2C_send_data_and_wait(I2Cx, register_to_write);
+    i2c_isr_err_occured = I2C_send_data_wait(I2Cx, register_to_write);
     if (!i2c_isr_err_occured)
     {
             I2C_TransferHandling(I2Cx, register_to_write, number_of_bytes_to_write, I2C_Generate_Start_Write, I2C_AutoEnd_Mode);
-            i2c_isr_err_occured = I2C_send_data_and_wait(I2Cx, data_to_write);
+            i2c_isr_err_occured = I2C_send_data_wait(I2Cx, data_to_write);
             i2c_isr_err_occured |= i2c_wait_flag_status(I2Cx, I2C_FLAG_STOPF, SET, I2C_MAX_RETRY);
     }
     return (i2c_isr_err_occured);

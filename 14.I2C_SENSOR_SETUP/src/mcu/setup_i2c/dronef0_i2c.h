@@ -6,7 +6,7 @@
 #include "stm32f0xx_rcc.h"
 #include <errno.h>
 
-#define      I2C_MAX_RETRY  ((uint32_t)100000)
+#define      I2C_MAX_RETRY  ((uint32_t)10000)
 
 void i2c_initialize();
 uint32_t i2c_read(I2C_TypeDef* I2Cx, uint16_t register_to_read, uint8_t *received_data, uint8_t number_of_bytes_to_read);
