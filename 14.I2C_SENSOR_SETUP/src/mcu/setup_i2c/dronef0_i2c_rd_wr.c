@@ -75,10 +75,10 @@ static uint32_t I2C_receive_data_wait(I2C_TypeDef* I2Cx, uint8_t* received_data)
         *received_data = I2C_ReceiveData(I2Cx);
     }
     i2c_isr_err_occured |= i2c_error_occur(I2Cx);
-    if (!i2c_isr_err_occured) 
-    {
-        i2c_isr_err_occured = i2c_wait_flag_status(I2Cx, I2C_FLAG_TC, SET, I2C_MAX_RETRY);
-    }
+    // if (!i2c_isr_err_occured) 
+    // {
+    //     i2c_isr_err_occured = i2c_wait_flag_status(I2Cx, I2C_FLAG_TC, SET, I2C_MAX_RETRY);
+    // }
     return (i2c_isr_err_occured);
 }
 
@@ -98,10 +98,10 @@ static uint32_t I2C_send_data_wait_and_check(I2C_TypeDef* I2Cx, uint8_t data_to_
         I2C_SendData(I2Cx, data_to_send);
     }
     i2c_isr_err_occured |= i2c_error_occur(I2Cx);
-    if (!i2c_isr_err_occured) 
-    {
-        i2c_isr_err_occured = i2c_wait_flag_status(I2Cx, I2C_FLAG_TC, SET, I2C_MAX_RETRY);
-    }
+    // if (!i2c_isr_err_occured) 
+    // {
+    //     i2c_isr_err_occured = i2c_wait_flag_status(I2Cx, I2C_FLAG_TC, SET, I2C_MAX_RETRY);
+    // }
     return (i2c_isr_err_occured);
 }
 
