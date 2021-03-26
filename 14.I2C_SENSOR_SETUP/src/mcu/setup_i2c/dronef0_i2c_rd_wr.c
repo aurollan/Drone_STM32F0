@@ -75,10 +75,6 @@ static uint32_t I2C_receive_data_wait(I2C_TypeDef* I2Cx, uint8_t* received_data)
         *received_data = I2C_ReceiveData(I2Cx);
     }
     i2c_isr_err_occured |= i2c_error_occur(I2Cx);
-    // if (!i2c_isr_err_occured) 
-    // {
-    //     i2c_isr_err_occured = i2c_wait_flag_status(I2Cx, I2C_FLAG_TC, SET, I2C_MAX_RETRY);
-    // }
     return (i2c_isr_err_occured);
 }
 
@@ -92,16 +88,12 @@ static uint32_t I2C_send_data_wait_and_check(I2C_TypeDef* I2Cx, uint8_t data_to_
     uint32_t    i2c_isr_err_occured;
 
     i2c_isr_err_occured = 0;
-    i2c_isr_err_occured = i2c_wait_flag_status(I2Cx, I2C_FLAG_TXE, SET, I2C_MAX_RETRY);
+    // i2c_isr_err_occured = i2c_wait_flag_status(I2Cx, I2C_FLAG_TXE, SET, I2C_MAX_RETRY);
     if (!i2c_isr_err_occured)
     {
         I2C_SendData(I2Cx, data_to_send);
     }
     i2c_isr_err_occured |= i2c_error_occur(I2Cx);
-    // if (!i2c_isr_err_occured) 
-    // {
-    //     i2c_isr_err_occured = i2c_wait_flag_status(I2Cx, I2C_FLAG_TC, SET, I2C_MAX_RETRY);
-    // }
     return (i2c_isr_err_occured);
 }
 
@@ -123,39 +115,26 @@ uint32_t i2c_read(I2C_TypeDef* I2Cx, uint16_t device_addr, uint16_t register_to_
     if (i2c_wait_flag_status(I2Cx, I2C_FLAG_BUSY, RESET, I2C_MAX_RETRY) != 0) {
         return (I2C_FLAG_BUSY);
     }
-    uart_send_data(USART1, (uint8_t*)"START READ\n", 11);
     I2C_TransferHandling(I2Cx, device_addr, 1, I2C_Generate_Start_Write, I2C_SoftEnd_Mode);
     i2c_isr_err_occured |= i2c_error_occur(I2Cx);
-    if (i2c_isr_err_occured)
-    {
-        uart_send_data(USART1, (uint8_t*)"DONT SEND DATA\n", 15);
-    }
     if (!i2c_isr_err_occured) 
     {
-        uart_send_data(USART1, (uint8_t*)"SEND DATA\n", 10);
         i2c_isr_err_occured  = I2C_send_data_wait_and_check(I2Cx, register_to_read);
-    }
-    if (i2c_isr_err_occured)
-    {
-        uart_send_data(USART1, (uint8_t*)"START READ FAIL\n", 16);
     }
     if (!i2c_isr_err_occured)
     {
-        uart_send_data(USART1, (uint8_t*)"READ RECEIVED\n", 14);
         I2C_TransferHandling(I2Cx, device_addr, number_of_bytes_to_read, I2C_Generate_Start_Read, I2C_AutoEnd_Mode);
         while (index < number_of_bytes_to_read)
         {
             i2c_isr_err_occured = I2C_receive_data_wait(I2Cx, &(received_data[index]));
             if (i2c_isr_err_occured)
             {
-                uart_send_data(USART1, (uint8_t*)"READ RECEIVED FAIL\n", 19);
                 break;
             }
             index++;
         }
         if (!i2c_isr_err_occured)
         {
-            uart_send_data(USART1, (uint8_t*)"EVERYTHING WENT OK\n", 19);
             i2c_isr_err_occured = i2c_wait_flag_status(I2Cx, I2C_FLAG_STOPF, SET, I2C_MAX_RETRY);
         }
     }
@@ -174,22 +153,11 @@ uint32_t i2c_write(I2C_TypeDef* I2Cx, uint16_t device_addr, uint8_t register_to_
     uint32_t    i2c_isr_err_occured;
 
     i2c_isr_err_occured              = 0;
-    I2C_TransferHandling(I2Cx, device_addr, 1, I2C_Generate_Start_Write, I2C_SoftEnd_Mode);
+    I2C_TransferHandling(I2Cx, device_addr, 2, I2C_Generate_Start_Write, I2C_AutoEnd_Mode);
     i2c_isr_err_occured |= i2c_error_occur(I2Cx);
-    if (i2c_isr_err_occured)
-    {
-        uart_send_data(USART1, (uint8_t*)"DONT SEND DATA\n", 15);
-    }
-    if (!i2c_isr_err_occured)
-    {
-        i2c_isr_err_occured = I2C_send_data_wait_and_check(I2Cx, register_to_write);
-    }
-    if (!i2c_isr_err_occured)
-    {
-            I2C_TransferHandling(I2Cx, register_to_write, 1, I2C_No_StartStop, I2C_AutoEnd_Mode);
-            i2c_isr_err_occured = I2C_send_data_wait_and_check(I2Cx, data_to_write);
-            i2c_isr_err_occured |= i2c_wait_flag_status(I2Cx, I2C_FLAG_STOPF, SET, I2C_MAX_RETRY);
-    }
+    i2c_isr_err_occured = I2C_send_data_wait_and_check(I2Cx, register_to_write);
+    i2c_isr_err_occured = I2C_send_data_wait_and_check(I2Cx, data_to_write);
+    i2c_isr_err_occured |= i2c_wait_flag_status(I2Cx, I2C_FLAG_STOPF, SET, I2C_MAX_RETRY);
     return (i2c_isr_err_occured);
 }
 

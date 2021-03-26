@@ -15,11 +15,14 @@ int main(void) {
     clock_initialize();
     communication_initialize();
     i2c_initialize();
+        uint32_t i2c_isr_err_occured;
+        i2c_isr_err_occured = set_gy_521_pwr(0x00);
     while (1)
     {
-        uint8_t who_am_i;
-        uint32_t i2c_isr_err_occured;
-        i2c_isr_err_occured = get_gy_521_who_am_i(&who_am_i);
+        //uint8_t who_am_i;
+        uint8_t pwr;
+        //i2c_isr_err_occured = get_gy_521_who_am_i(&who_am_i);
+        i2c_isr_err_occured = get_gy_521_pwr(&pwr);
 
         if (i2c_isr_err_occured)
         {
@@ -46,21 +49,9 @@ int main(void) {
                 if (i2c_isr_err_occured & I2C_FLAG_NACKF)
                 {
                     uart_send_data(USART1, (uint8_t*)"ERR_NACK\n", 9);
-                    /* Clearing NACK flag for the next communication */
+                    // Clearing NACK flag for the next communication
                     I2C1->ISR &= ~I2C_FLAG_NACKF;
                 }
-        }
-        else if (0x68 == who_am_i) // who am i default register value is 0x68
-        {
-            uart_send_data(USART1, &who_am_i, 1);
-            uart_send_data(USART1, (uint8_t*)"\nOK\n", 4);
-        }
-        else {
-            who_am_i += 48;
-            uart_send_data(USART1, (uint8_t*)"NO ERROR BUT WHO AM I IS : [", 28);
-            uart_send_data(USART1, &who_am_i, 1);
-            uart_send_data(USART1, (uint8_t*)"]\n", 2);
-        
         }
     }
     return (0);
