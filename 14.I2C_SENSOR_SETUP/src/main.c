@@ -26,35 +26,34 @@ int main(void) {
                 if (i2c_isr_err_occured & I2C_FLAG_BERR)
                 {
                     uart_send_data(USART1, (uint8_t*)"ERR_BERR\n", 9);
-                    uart_send_data(USART2, (uint8_t*)"ERR_BERR\n", 9);
                 }
                 if (i2c_isr_err_occured & I2C_FLAG_BUSY)
                 {
                     uart_send_data(USART1, (uint8_t*)"ERR_BUSY\n", 9);
-                    uart_send_data(USART2, (uint8_t*)"ERR_BUSY\n", 9);
                 }
                 if (i2c_isr_err_occured & I2C_FLAG_ARLO)
                 {
                     uart_send_data(USART1, (uint8_t*)"ERR_ARLO\n", 9);
-                    uart_send_data(USART2, (uint8_t*)"ERR_ARLO\n", 9);
                 }
                 if (i2c_isr_err_occured & I2C_FLAG_OVR)
                 {
                     uart_send_data(USART1, (uint8_t*)"ERR_OVR\n", 8);
-                    uart_send_data(USART2, (uint8_t*)"ERR_OVR\n", 8);
                 }
                 if (i2c_isr_err_occured & I2C_FLAG_TIMEOUT)
                 {
                     uart_send_data(USART1, (uint8_t*)"ERR_TOUT\n", 9);
-                    uart_send_data(USART2, (uint8_t*)"ERR_TOUT\n", 9);
+                }
+                if (i2c_isr_err_occured & I2C_FLAG_NACKF)
+                {
+                    uart_send_data(USART1, (uint8_t*)"ERR_NACK\n", 9);
+                    /* Clearing NACK flag for the next communication */
+                    I2C1->ISR &= ~I2C_FLAG_NACKF;
                 }
         }
         else if (0x68 == who_am_i) // who am i default register value is 0x68
         {
             uart_send_data(USART1, &who_am_i, 1);
-            uart_send_data(USART2, &who_am_i, 1);
             uart_send_data(USART1, (uint8_t*)"\nOK\n", 4);
-            uart_send_data(USART2, (uint8_t*)"\nOK\n", 4);
         }
         else {
             who_am_i += 48;

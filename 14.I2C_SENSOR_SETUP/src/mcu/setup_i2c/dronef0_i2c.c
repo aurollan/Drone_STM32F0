@@ -53,11 +53,6 @@ void I2C1_initialize()
 {
     I2C_InitTypeDef I2C1_init;
 
-    /**
-     * Disabling i2c as asked in reference manual
-     */
-    I2C_Cmd(I2C1, DISABLE);
-
     /** 
      * Init struct with default setup
      */
@@ -68,6 +63,11 @@ void I2C1_initialize()
      * I2C1 is on APB1ENR
      */
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
+
+    /**
+     * Disabling i2c as asked in reference manual
+     */
+    I2C_Cmd(I2C1, DISABLE);
 
     /**
      * Setting I2C1 according to our needs

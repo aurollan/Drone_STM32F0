@@ -107,14 +107,14 @@ uint32_t I2C_send_data_and_wait(I2C_TypeDef* I2Cx, uint8_t data_to_send)
  * @param   number_of_bytes_to_read     uint8_t.        Number of bytes to read from peripheral
  * @return  i2c_isr_err_occured uint32_t. Contains only I2C ISR register error bits
  */
-uint32_t i2c_read(I2C_TypeDef* I2Cx, uint16_t register_to_read, uint8_t *received_data, uint8_t number_of_bytes_to_read)
+uint32_t i2c_read(I2C_TypeDef* I2Cx, uint16_t device_addr, uint16_t register_to_read, uint8_t *received_data, uint8_t number_of_bytes_to_read)
 {
     uint32_t    index;
     uint32_t    i2c_isr_err_occured;
 
     index       = 0;
     i2c_isr_err_occured = 0;
-    I2C_TransferHandling(I2Cx, register_to_read, 1, I2C_Generate_Start_Read, I2C_SoftEnd_Mode);
+    I2C_TransferHandling(I2Cx, device_addr, 1, I2C_Generate_Start_Write, I2C_SoftEnd_Mode);
     i2c_isr_err_occured  = I2C_send_data_and_wait(I2Cx, register_to_read);
     if (!i2c_isr_err_occured)
     {
@@ -143,7 +143,7 @@ uint32_t i2c_read(I2C_TypeDef* I2Cx, uint16_t register_to_read, uint8_t *receive
  * @param   data_to_write     uint8_t.      Data to write to register
  * @return  i2c_isr_err_occured       uint32_t.     Contains only register error bits
  */
-uint32_t i2c_write(I2C_TypeDef* I2Cx, uint8_t register_to_write, uint8_t data_to_write)
+uint32_t i2c_write(I2C_TypeDef* I2Cx, uint16_t device_addr, uint8_t register_to_write, uint8_t data_to_write)
 {
     uint32_t    i2c_isr_err_occured;
     uint32_t    number_of_bytes_to_read;
@@ -152,7 +152,7 @@ uint32_t i2c_write(I2C_TypeDef* I2Cx, uint8_t register_to_write, uint8_t data_to
     i2c_isr_err_occured              = 0;
     number_of_bytes_to_read  = 1;
     number_of_bytes_to_write = 1;
-    I2C_TransferHandling(I2Cx, register_to_write, number_of_bytes_to_read, I2C_Generate_Start_Read, I2C_SoftEnd_Mode);
+    I2C_TransferHandling(I2Cx, register_to_write, number_of_bytes_to_read, I2C_Generate_Start_Write, I2C_SoftEnd_Mode);
     i2c_isr_err_occured = I2C_send_data_and_wait(I2Cx, register_to_write);
     if (!i2c_isr_err_occured)
     {

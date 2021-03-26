@@ -1,6 +1,9 @@
 #pragma once
 #include <stdint.h>
 
+#define I2C_SLAVE_ADDR_AD0 1101000
+#define I2C_SLAVE_ADDR_AD1 1101001
+
 /**
  * @brief   Creating define to manipulate register in a readable way.
  *          Data direcly sourced from mpu-6050 register map and descriptions
