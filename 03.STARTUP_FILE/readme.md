@@ -10,3 +10,8 @@ I have commented this line causing me compilation issues
         /* bl __libc_init_array */
 
 This is why I made a local copy.
+
+# Not enough information ?
+Check out my other tutorial, I explain more in detail why and how we use a
+start up file. Or look for answer on the internet, there is a lot of good
+article on this topic.

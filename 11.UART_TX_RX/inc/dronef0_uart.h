@@ -7,4 +7,4 @@
 
 void communication_initialize();
 
-#endif
+#endif /* DRONEF0_UART_H */

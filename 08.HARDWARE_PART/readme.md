@@ -9,12 +9,14 @@ you to buy a discovery board on some well known and reliable retailer.
 
     https://fr.rs-online.com/web/p/outils-de-developpement-pour-microcontroleurs/7587554/
 
-If you get another board than mine (stm32f030c6t8) you should just adjust your 
+If you get another board than mine (stm32f030c8) you should adjust your 
 linker script and your start up file. 
 This is easy, everything is in the file names.
 You shouldn't have trouble for this tutorial because every other stm32f0 
-product have better specification than mine.
-NOTE: Discovery board usually hace an embedded st-link so you don't have to 
+product have better specification than mine. But be carefull some 
+microcontroller don't have the same configuration.
+
+NOTE: Discovery board usually have an embedded st-link so you don't have to 
 buy one.
 
 
