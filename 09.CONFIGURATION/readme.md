@@ -29,7 +29,7 @@ For my microcontroller here are the choice I made:
         GPIOA 14 => TX
         GPIOA 15 => RX
 
-    TIM3 timer with PWM on 4 channels using the following GPIO:
+    TIM3 timer with 4 channels PWM using the following GPIO:
         GPIOB 04 => channel 1
         GPIOB 05 => channel 2
         GPIOB 01 => channel 3
@@ -38,5 +38,5 @@ For my microcontroller here are the choice I made:
 Most of the time you have more that 1 possibility for each of your communication bus.
 You can make your own choice.
 We will create associated variable in on configuration header file
-we will use in our project.
+we use in our project.
 

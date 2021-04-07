@@ -50,7 +50,7 @@ vpath %.c ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/CMSIS/Device/ST
 # For Std library source file
 vpath %.c ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/STM32F0xx_StdPeriph_Driver/src/
 # For our own source files
-vpath %.c src/
+vpath %.c src/mcu/setup_clock/
 
 ################################################################################
 #							PROJECT FILES									   #
@@ -64,8 +64,9 @@ FILE_LKS = STM32F030R8Tx_FLASH.ld
 
 # Files used for building project
 FILE_SRC = main.c \
+		   dronef0_clock.c \
            stm32f0xx_rcc.c \
-           stm32f0xx_gpio.c \
+           stm32f0xx_flash.c \
 		   system_stm32f0xx.c \
 
 FILE_OBJ = $(FILE_SRC:.c=.o)

@@ -12,6 +12,8 @@
         |
         |______> mcu
         |       |
+        |       |____> setup clock
+        |       |
         |       |____> setup pwm
         |       |
         |       |____> setup uart
@@ -40,7 +42,8 @@
 
 ## Explenation
 ### MCU
-In the `mcu` repository we will setup the microcontroller communication interface.
+In the `mcu` repository we will setup the microcontroller communication 
+interfaces.
 
 ### SENSORS
 In the `sensors` repository we will translate raw data received to actual 
