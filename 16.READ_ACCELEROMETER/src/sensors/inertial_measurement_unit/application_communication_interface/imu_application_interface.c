@@ -12,7 +12,7 @@ extern const uint8_t accel_scale_config;
  *
  * @return  0 is everything went right, another value otherwise
  */
-static  uint32_t    get_accel_raw_data(uint8_t *buffer, uint8_t len)
+static uint32_t    get_accel_raw_data(uint8_t *buffer, uint8_t len)
 {
     uint32_t ret;
 
