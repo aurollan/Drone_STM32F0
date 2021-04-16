@@ -6,4 +6,5 @@
 #define ACCEL_CONFIG_8G     ((uint8_t)(0x02 << 3))
 #define ACCEL_CONFIG_16G    ((uint8_t)(0x03 << 3))
 
+#define PWR_CLK_SEL_GYR_X   ((uint8_t)(0x01 << 0))
 

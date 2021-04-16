@@ -60,6 +60,10 @@ vpath %.c src/
 vpath %.c src/mcu/setup_uart/
 vpath %.c src/mcu/setup_clock/
 vpath %.c src/mcu/setup_i2c/
+vpath %.c src/sensors/inertial_measurement_unit/
+vpath %.c src/sensors/inertial_measurement_unit/mapping_and_configuration/
+vpath %.c src/sensors/inertial_measurement_unit/bus_communication_interface/
+vpath %.c src/sensors/inertial_measurement_unit/application_communication_interface/
 
 ################################################################################
 #							PROJECT FILES									   #
@@ -83,6 +87,10 @@ FILE_SRC = main.c \
            stm32f0xx_gpio.c \
 		   stm32f0xx_flash.c \
 		   system_stm32f0xx.c \
+		   imu_init.c \
+		   imu_bus_interface.c \
+		   imu_application_interface.c \
+	
 
 FILE_OBJ = $(FILE_SRC:.c=.o)
 FILE_OBJ += $(FILE_ASM:.s=.o)
