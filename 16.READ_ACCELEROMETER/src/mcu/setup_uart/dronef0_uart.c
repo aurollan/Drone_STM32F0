@@ -1,4 +1,6 @@
-#include "dronef0_uart.h"
+#include "stm32f0xx_gpio.h"
+#include "stm32f0xx_usart.h"
+#include "stm32f0xx_rcc.h"
 
 static void GPIOB_initialize()
 {

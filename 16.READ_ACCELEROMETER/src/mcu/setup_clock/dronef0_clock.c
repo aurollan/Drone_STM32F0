@@ -1,4 +1,5 @@
-#include "dronef0_clock.h"
+#include "stm32f0xx_rcc.h"
+#include "stm32f0xx_flash.h"
 
 void clock_initialize(void)
 {

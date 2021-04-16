@@ -1,4 +1,6 @@
-#include "dronef0_i2c.h"
+#include "stm32f0xx_i2c.h"
+#include "stm32f0xx_gpio.h"
+#include "stm32f0xx_rcc.h"
 
 static void GPIOB_for_i2c1_initialize()
 {
