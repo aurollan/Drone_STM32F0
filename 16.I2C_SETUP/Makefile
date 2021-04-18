@@ -27,8 +27,6 @@ GDB = gdb-multiarch
 FLASH_TOOL = openocd
 
 # Include directories given to GCC
-# For our own include files
-DIR_INC_LOCAL = inc
 # For system_stm32f0xx.h file and stm32f0xx.h file
 DIR_INC_DEVICE = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/CMSIS/Device/ST/STM32F0xx/Include
 # For ARM Cortex M0 header files

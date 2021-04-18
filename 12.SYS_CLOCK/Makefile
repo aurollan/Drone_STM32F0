@@ -21,11 +21,14 @@ LD = arm-none-eabi-ld
 DB = arm-none-eabi-gdb
 
 # Launch debug from Linux (Ubuntu/Debian)
-LDB = gdb-multiarch
+GDB = gdb-multiarch
+
+# Flash utility
+FLASH_TOOL = openocd
 
 # Include directories given to GCC
-# For our own include files
-DIR_INC_LOCAL = inc
+# For our own include files. All file path are relative to this repository
+DIR_INC_LOCAL = src
 # For system_stm32f0xx.h file and stm32f0xx.h file
 DIR_INC_DEVICE = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/CMSIS/Device/ST/STM32F0xx/Include
 # For ARM Cortex M0 header files
@@ -38,8 +41,11 @@ DIR_INC_STD_LIB_CONF = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Projects/STM
 # Start up file repository (I have commented a line so I made a local copy)
 DIR_ASM = ../03.STARTUP_FILE
 
-# Linker script file repository
+# Linker script file repository (I have commented a line so I made a local copy)
 DIR_LKS = ../02.LINKER_SCRIPT
+
+# OpenOCD debug script file repository
+DIR_OCD_SCRIPT = ../07.SCRIPT
 
 # Object files repository
 DIR_OBJ = obj
@@ -50,6 +56,8 @@ vpath %.c ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/CMSIS/Device/ST
 # For Std library source file
 vpath %.c ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/STM32F0xx_StdPeriph_Driver/src/
 # For our own source files
+vpath %.c src/
+vpath %.c src/mcu
 vpath %.c src/mcu/setup_clock/
 
 ################################################################################
@@ -64,6 +72,7 @@ FILE_LKS = STM32F030R8Tx_FLASH.ld
 
 # Files used for building project
 FILE_SRC = main.c \
+		   init_mcu.c \
 		   dronef0_clock.c \
            stm32f0xx_rcc.c \
            stm32f0xx_flash.c \
@@ -76,7 +85,6 @@ OBJ = $(addprefix $(DIR_OBJ)/, $(FILE_OBJ))
 ASM = $(addprefix $(DIR_ASM)/, $(FILE_ASM))
 # We are using vpath now so we don't have to bother with file path for 
 # *.c and *.h
-# SRC = $(addprefix $(DIR_SRC)/, $(FILE_SRC))
 
 ################################################################################
 #							GCC COMPILATION FLAGS							   #
@@ -88,7 +96,7 @@ ARCH_FLAGS =-mthumb -mcpu=cortex-m$(CORTEX_M) -mlittle-endian -mthumb-interwork
 # Debug flags
 DBG_FLAGS = -g3
 
-# Floating point flags (ARM) no hardware floating point support
+# Floating point flags (ARM) no hardware floating point support, only soft
 FP_FLAGS =  -mfloat-abi=soft 
 
 # Include path flags
@@ -102,7 +110,7 @@ INC_STD_LIB_CONF_FLAG = $(addprefix -I , $(DIR_INC_STD_LIB_CONF))
 INC_FLAGS = $(INC_LOCAL_FLAG) $(INC_DEVICE_FLAG) $(INC_CORTEX_FLAG) \
 			$(INC_STD_LIB_FLAG) $(INC_STD_LIB_CONF_FLAG)
 
-# DEFINE/Macro flags
+# DEFINE/MACRO flags
 DM_FLAGS = -DSTM32F030X8
 
 # Both following define come together (for using FULL_ASSERT)
@@ -132,8 +140,14 @@ MAP_FLAGS = -Map=$(NAME).map
 # Linking Script file (I have commented 3 line a the end so I made a local copy)
 LS_FLAGS = -T $(DIR_LKS)/$(FILE_LKS)
 
+# Linking nano librarie
+LN_FLAGS = --library-path=/usr/lib/arm-none-eabi/newlib/thumb/v6-m/ --library=c_nano
+
+# Linking libgcc.a
+LG_FLAGS = --library-path=/usr/lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/ --library=gcc
+
 # All flags for LD linking step
-LD_FLAGS = $(LS_FLAGS) $(LO_FLAGS) $(MAP_FLAGS)
+LD_FLAGS = $(LS_FLAGS) $(LO_FLAGS) $(MAP_FLAGS) $(LN_FLAGS) $(LG_FLAGS)
 
 ################################################################################
 #								MAKE RULES									   #
@@ -142,7 +156,7 @@ LD_FLAGS = $(LS_FLAGS) $(LO_FLAGS) $(MAP_FLAGS)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(LD) $^ $(LD_FLAGS) -o $@
+	$(LD) $^ -o $@ $(LD_FLAGS)
 	@echo "\033[33;32m=== Linking $(NAME)...\t\t\tDONE\033[0m"
 	@echo "---------------------------------------------------------------------"
 
@@ -161,8 +175,11 @@ $(DIR_OBJ)/%.o: $(DIR_ASM)/%.s
 	@echo "---------------------------------------------------------------------"
 
 # Linux (Debian) flash and launch debug session
-launch:
-	@$(LDB) -q $(NAME) -x openocd.gdb
+debug:
+	@$(GDB) -q $(NAME) -x $(DIR_OCD_SCRIPT)/openocd.gdb
+
+flash: all
+	@$(FLASH_TOOL) -f interface/stlink-v2.cfg -f target/stm32f0x.cfg -c "program $(NAME) verify reset exit"
 
 # Delete all intermediate files
 clean: 

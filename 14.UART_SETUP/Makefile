@@ -13,7 +13,7 @@ CORTEX_M = 0
 CORE = CM$(CORTEX_M)
 
 # Project name
-NAME = COM-$(CORE).elf
+NAME = UART-$(CORE).elf
 
 # Compiler, Linker & Debugger
 CC = arm-none-eabi-gcc
@@ -21,14 +21,14 @@ LD = arm-none-eabi-ld
 DB = arm-none-eabi-gdb
 
 # Launch debug from Linux (Ubuntu/Debian)
-LDB = gdb-multiarch
+GDB = gdb-multiarch
 
-# Flahs utility
+# Flash utility
 FLASH_TOOL = openocd
 
 # Include directories given to GCC
-# For our own include files
-DIR_INC_LOCAL = inc
+# For our own include files. All file path are relative to this repository
+DIR_INC_LOCAL = src
 # For system_stm32f0xx.h file and stm32f0xx.h file
 DIR_INC_DEVICE = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/CMSIS/Device/ST/STM32F0xx/Include
 # For ARM Cortex M0 header files
@@ -41,7 +41,7 @@ DIR_INC_STD_LIB_CONF = ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Projects/STM
 # Start up file repository (I have commented a line so I made a local copy)
 DIR_ASM = ../03.STARTUP_FILE
 
-# Linker script file repository
+# Linker script file repository (I have commented a line so I made a local copy)
 DIR_LKS = ../02.LINKER_SCRIPT
 
 # OpenOCD debug script file repository
@@ -57,6 +57,8 @@ vpath %.c ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/CMSIS/Device/ST
 vpath %.c ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/STM32F0xx_StdPeriph_Driver/src/
 # For our own source files
 vpath %.c src/
+vpath %.c src/mcu/
+vpath %.c src/mcu/setup_uart/
 
 ################################################################################
 #							PROJECT FILES									   #
@@ -70,6 +72,7 @@ FILE_LKS = STM32F030R8Tx_FLASH.ld
 
 # Files used for building project
 FILE_SRC = main.c \
+		   init_mcu.c \
 		   dronef0_uart.c \
            stm32f0xx_rcc.c \
            stm32f0xx_gpio.c \
@@ -84,7 +87,6 @@ OBJ = $(addprefix $(DIR_OBJ)/, $(FILE_OBJ))
 ASM = $(addprefix $(DIR_ASM)/, $(FILE_ASM))
 # We are using vpath now so we don't have to bother with file path for 
 # *.c and *.h
-# SRC = $(addprefix $(DIR_SRC)/, $(FILE_SRC))
 
 ################################################################################
 #							GCC COMPILATION FLAGS							   #
@@ -96,7 +98,7 @@ ARCH_FLAGS =-mthumb -mcpu=cortex-m$(CORTEX_M) -mlittle-endian -mthumb-interwork
 # Debug flags
 DBG_FLAGS = -g3
 
-# Floating point flags (ARM) no hardware floating point support
+# Floating point flags (ARM) no hardware floating point support, only soft
 FP_FLAGS =  -mfloat-abi=soft 
 
 # Include path flags
@@ -110,7 +112,7 @@ INC_STD_LIB_CONF_FLAG = $(addprefix -I , $(DIR_INC_STD_LIB_CONF))
 INC_FLAGS = $(INC_LOCAL_FLAG) $(INC_DEVICE_FLAG) $(INC_CORTEX_FLAG) \
 			$(INC_STD_LIB_FLAG) $(INC_STD_LIB_CONF_FLAG)
 
-# DEFINE/Macro flags
+# DEFINE/MACRO flags
 DM_FLAGS = -DSTM32F030X8
 
 # Both following define come together (for using FULL_ASSERT)
@@ -176,9 +178,9 @@ $(DIR_OBJ)/%.o: $(DIR_ASM)/%.s
 
 # Linux (Debian) flash and launch debug session
 debug:
-	@$(LDB) -q $(NAME) -x $(DIR_OCD_SCRIPT)/openocd.gdb
+	@$(GDB) -q $(NAME) -x $(DIR_OCD_SCRIPT)/openocd.gdb
 
-flash:
+flash: all
 	@$(FLASH_TOOL) -f interface/stlink-v2.cfg -f target/stm32f0x.cfg -c "program $(NAME) verify reset exit"
 
 # Delete all intermediate files

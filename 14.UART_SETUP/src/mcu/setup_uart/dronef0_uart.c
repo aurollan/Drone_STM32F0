@@ -1,4 +1,19 @@
-#include "../inc/dronef0_uart.h"
+#include "dronef0_uart.h"
+#include "stm32f0xx_usart.h"
+
+void function_to_end(void)
+{
+    FlagStatus flag_status;
+    //character = USART_ReceiveData(USART2);
+    while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) != SET);
+    USART_SendData(USART1, 'c');
+
+    flag_status = USART_GetFlagStatus(USART1, USART_FLAG_ORE);
+    flag_status = USART_GetFlagStatus(USART1, USART_FLAG_NE);
+    flag_status = USART_GetFlagStatus(USART1, USART_FLAG_FE);
+    flag_status = USART_GetFlagStatus(USART1, USART_FLAG_PE);
+    (void)flag_status;
+}
 
 static void GPIOB_initialize()
 {
@@ -120,7 +135,7 @@ void USART1_initialize()
     USART_Cmd(USART1, ENABLE);
 }
 
-void communication_initialize() 
+void uart_initialize() 
 {
     /* Setting up GPIO */
     GPIOA_initialize();
