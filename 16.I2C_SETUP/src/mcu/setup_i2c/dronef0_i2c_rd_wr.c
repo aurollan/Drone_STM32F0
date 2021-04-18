@@ -1,5 +1,4 @@
 #include "dronef0_i2c.h"
-#include "mcu/setup_usart/dronef0_uart.h"
 
 /**
  * @brief   Wait i2c_flag to be set to flag_status 
