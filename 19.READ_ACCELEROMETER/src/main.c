@@ -2,10 +2,8 @@
 #include <string.h>
 #include "sensors/inertial_measurement_unit/imu_init.h"
 #include "sensors/inertial_measurement_unit/application_communication_interface/imu_application_interface.h"
-#include "mcu/setup_clock/dronef0_clock.h"
-#include "mcu/setup_i2c/dronef0_i2c.h"
-#include "mcu/setup_uart/dronef0_uart.h"
 #include "mcu/setup_uart/dronef0_uart_tx_rx.h"
+#include "mcu/init_mcu.h"
 
 #include <stdio.h>
 
@@ -15,15 +13,13 @@ void assert_failed(uint8_t* file, uint32_t line) {
 }
 
 int main(void) {
-    /* Everything went as expected we can setup our mcu */
-    clock_initialize();
-    i2c_initialize();
-    uart_initialize();
+    /* Init mcu */
+    init_mcu();
     /* Don't start application if initialization fail */
     if (0 != init_inertial_measurement_unit()) {
         while(1);
     }
-    uint8_t buffer[6];
+    //uint8_t buffer[6];
     char str[100];
     float x_g;
     float y_g;

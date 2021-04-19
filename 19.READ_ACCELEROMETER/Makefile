@@ -57,6 +57,7 @@ vpath %.c ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/CMSIS/Device/ST
 vpath %.c ../01.LIBRARY/STM32F0xx_StdPeriph_Lib_V1.5.0/Libraries/STM32F0xx_StdPeriph_Driver/src/
 # For our own source files
 vpath %.c src/
+vpath %.c src/mcu/
 vpath %.c src/mcu/setup_uart/
 vpath %.c src/mcu/setup_clock/
 vpath %.c src/mcu/setup_i2c/
@@ -77,8 +78,10 @@ FILE_LKS = STM32F030R8Tx_FLASH.ld
 
 # Files used for building project
 FILE_SRC = main.c \
+		   init_mcu.c \
 		   dronef0_clock.c \
 		   dronef0_uart.c \
+		   dronef0_uart_tx_rx.c \
 		   dronef0_i2c.c \
 		   dronef0_i2c_rd_wr.c \
            stm32f0xx_rcc.c \
