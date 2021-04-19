@@ -8,10 +8,10 @@
 
 /**
  * GPIOA
- * GPIOA 14 => USART1_TX
- * GPIOA 15 => USART1_RX
+ * GPIOA 02 => USART1_TX
+ * GPIOA 03 => USART1_RX
  */
-const USART_TypeDef* COMM_IN_OUT = USART1;
+const USART_TypeDef* COMM_IN_OUT = USART2;
 /**
  * GPIOB
  * GPIOB 08 => I2C1_SCL

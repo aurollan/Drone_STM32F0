@@ -45,7 +45,7 @@ DIR_ASM = ../03.STARTUP_FILE
 DIR_LKS = ../02.LINKER_SCRIPT
 
 # OpenOCD debug script file repository
-DIR_OCD_SCRIPT = ../07.SCRIPT
+DIR_OCD_SCRIPT = ../08.SCRIPT
 
 # Object files repository
 DIR_OBJ = obj
@@ -78,6 +78,7 @@ FILE_LKS = STM32F030R8Tx_FLASH.ld
 
 # Files used for building project
 FILE_SRC = main.c \
+		   syscall.c \
 		   init_mcu.c \
 		   dronef0_clock.c \
 		   dronef0_uart.c \
