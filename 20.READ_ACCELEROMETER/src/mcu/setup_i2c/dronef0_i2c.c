@@ -55,6 +55,8 @@ void I2C1_initialize()
 {
     I2C_InitTypeDef I2C1_init;
 
+    I2C_ClearFlag(I2C1,I2C_FLAG_BUSY);
+    I2C_DeInit(I2C1);
     /** 
      * Init struct with default setup
      */

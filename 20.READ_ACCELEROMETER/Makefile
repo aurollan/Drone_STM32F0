@@ -159,7 +159,7 @@ MAP_FLAGS = -Map=$(NAME).map
 LS_FLAGS = -T $(DIR_LKS)/$(FILE_LKS)
 
 # Linking nano librarie
-LN_FLAGS = --library-path=/usr/lib/arm-none-eabi/newlib/thumb/v6-m/ --library=c_nano
+LN_FLAGS = --library-path=/usr/lib/arm-none-eabi/newlib/thumb/v6-m/ --library=c_nano -u _printf_float
 
 # Linking libgcc.a
 LG_FLAGS = --library-path=/usr/lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/ --library=gcc

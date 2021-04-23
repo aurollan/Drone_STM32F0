@@ -18,26 +18,34 @@ int main(void) {
     init_mcu();
 
     uint8_t data;
-    while (1) {
-        get_register_config(((uint8_t)0x75), &data);
-        data += 35;
-        uart_send(USART1, &data, 1);
+    uint32_t err;
+    data = 0x00;
+    err = get_register_config(((uint8_t)0x75), &data);
+    if (err)
+    {
+        printf("An error occur\n");
     }
+    printf("WHOAMI [%x]\n", data);
 
     /* Don't start application if initialization fail */
     if (0 != init_inertial_measurement_unit()) {
         while(1);
     }
     //uint8_t buffer[6];
-    char str[100];
     float x_g;
     float y_g;
     float z_g;
     while (1)
     {
-        get_accel_g_data(&x_g, &y_g, &z_g);
-        sprintf(str,"x_g = [%f]\n y_g = [%f]\n z_g = [%f]\n",x_g, y_g, z_g);
-        uart_send(USART1, (uint8_t*)str, strlen(str));
+        err = get_accel_g_data(&x_g, &y_g, &z_g);
+        if (err)
+        {
+            printf("an error occured\n");
+        }
+        else
+        {
+            printf("x_g = [%f] y_g = [%f] z_g = [%f]\n",x_g, y_g, z_g);
+        }
     }
     return (0);
 }
