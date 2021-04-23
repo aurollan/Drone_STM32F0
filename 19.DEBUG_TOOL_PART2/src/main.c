@@ -17,10 +17,9 @@ int main(void) {
     /* Init mcu */
     init_mcu();
 
-    uint8_t data;
     while (1) {
-        get_register_config(((uint8_t)0x75), &data);
-        uart_send(&data, 1);
+        uart_send(USART1, (uint8_t*)"bonjour\n", 8);
+        printf("aurevoir\n");
     }
 
     /* Don't start application if initialization fail */
@@ -36,7 +35,7 @@ int main(void) {
     {
         get_accel_g_data(&x_g, &y_g, &z_g);
         sprintf(str,"x_g = [%f]\n y_g = [%f]\n z_g = [%f]\n",x_g, y_g, z_g);
-        uart_send((uint8_t*)str, strlen(str));
+        uart_send(USART1, (uint8_t*)str, strlen(str));
     }
     return (0);
 }

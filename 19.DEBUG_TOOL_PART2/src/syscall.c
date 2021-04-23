@@ -1,11 +1,13 @@
 #include <stdint.h>
-#include <syscall.h>
+#include "syscall.h"
+#include "mcu/setup_uart/dronef0_uart_tx_rx.h"
 
 int _write(int32_t file, char* ptr, int32_t len)
 {
+    uint32_t err;
     (void)file;
-    (void)ptr;
-    (void)len;
+    err = uart_send(USART1, (uint8_t*)ptr, len);
+    (void)err;
     return (0);
 }
 
