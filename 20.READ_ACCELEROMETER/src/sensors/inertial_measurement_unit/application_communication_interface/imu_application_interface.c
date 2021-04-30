@@ -3,6 +3,7 @@
 #include "sensors/inertial_measurement_unit/mapping_and_configuration/gy-521_register_map.h"
 #include "sensors/inertial_measurement_unit/mapping_and_configuration/gy-521_configuration_map.h"
 
+#include <stdio.h>
 extern const uint8_t accel_scale_config;
 
 /**
@@ -66,20 +67,20 @@ static  uint16_t    get_scaling_divider(uint8_t accel_scale)
 uint32_t get_accel_g_data(float *x_g, float *y_g, float *z_g)
 {
     uint32_t    ret;
-    uint8_t     buffer[6];
+    int8_t     buffer[6];
     uint16_t    scaling_divider;
 
-    ret = get_accel_raw_data(buffer, sizeof(buffer));
+    ret = get_accel_raw_data((uint8_t*)buffer, sizeof(buffer));
     if (0 == ret)
     {
         scaling_divider = get_scaling_divider(accel_scale_config);
-        /* Store retrived data */
-        *x_g =  ((uint16_t)buffer[0] << 8); /* high */
-        *x_g += ((uint16_t)buffer[1] << 0); /* low */
-        *y_g =  ((uint16_t)buffer[2] << 8); /* high */
-        *y_g += ((uint16_t)buffer[3] << 0); /* low */
-        *z_g =  ((uint16_t)buffer[4] << 8); /* high */
-        *z_g += ((uint16_t)buffer[5] << 0); /* low */
+
+        *x_g =  ((int16_t)buffer[0] << 8); /* high */
+        *x_g += ((int16_t)buffer[1] << 0); /* low */
+        *y_g =  ((int16_t)buffer[2] << 8); /* high */
+        *y_g += ((int16_t)buffer[3] << 0); /* low */
+        *z_g =  ((int16_t)buffer[4] << 8); /* high */
+        *z_g += ((int16_t)buffer[5] << 0); /* low */
 
         /* Translate to g value */
         *x_g /= scaling_divider;

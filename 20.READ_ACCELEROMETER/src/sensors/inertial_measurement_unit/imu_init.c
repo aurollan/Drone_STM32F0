@@ -3,7 +3,7 @@
 #include "mapping_and_configuration/gy-521_configuration_map.h"
 #include "bus_communication_interface/imu_bus_interface.h"
 
-const uint8_t accel_scale_config = ACCEL_CONFIG_8G;
+const uint8_t accel_scale_config = ACCEL_CONFIG_2G;
 
 uint32_t init_inertial_measurement_unit(void)
 {
