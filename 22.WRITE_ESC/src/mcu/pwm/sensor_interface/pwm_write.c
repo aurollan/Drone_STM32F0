@@ -1,5 +1,5 @@
-#include "mcu/pwm/sensor_interface/write_pwm.h"
 #include "stm32f0xx_tim.h"
+#include "mcu/pwm/sensor_interface/pwm_write.h"
 
 /**
  * @brief   Set speed as persent of available power.

@@ -5,6 +5,7 @@
 #include "mcu/init_mcu.h"
 #include "sensors/inertial_measurement_unit/application_interface/accelerometer/accelerometer.h"
 #include "sensors/inertial_measurement_unit/application_interface/gyroscope/gyroscope.h"
+#include "sensors/motors/application_interface/power.h"
 
 
 void assert_failed(uint8_t* file, uint32_t line) {
@@ -26,6 +27,7 @@ int main(void) {
     float x_ds;
     float y_ds;
     float z_ds;
+    set_motor_power(eMotor1, 50);
     while (1)
     {
         err = get_accel_g_data(&x_g, &y_g, &z_g);

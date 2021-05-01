@@ -67,7 +67,7 @@ vpath %.c src/mcu/uart/setup/
 vpath %.c src/mcu/pwm/setup/
 vpath %.c src/mcu/uart/sensor_interface/
 vpath %.c src/mcu/i2c/sensor_interface/
-vpath %.c src/mcu/pwm/sensor_interface
+vpath %.c src/mcu/pwm/sensor_interface/
 
 # For sensor part
 vpath %.c src/sensors/
@@ -105,7 +105,9 @@ FILE_SRC = main.c \
 		   dronef0_uart_tx_rx.c \
 		   dronef0_i2c.c \
 		   dronef0_i2c_rd_wr.c \
+		   pwm_write.c \
            stm32f0xx_rcc.c \
+           stm32f0xx_tim.c \
            stm32f0xx_i2c.c \
            stm32f0xx_usart.c \
            stm32f0xx_gpio.c \

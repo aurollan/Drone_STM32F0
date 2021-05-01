@@ -1,7 +1,6 @@
 #include "dronef0_pwm.h"
 
 const uint32_t second_in_us = 1000000;
-const uint16_t max_duty_cycle = 2000;
 const uint32_t second_in_ms = 1000;
 
 uint16_t clock_frequency_to_ms(void)
