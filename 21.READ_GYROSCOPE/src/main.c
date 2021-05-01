@@ -35,17 +35,21 @@ int main(void) {
     float x_g;
     float y_g;
     float z_g;
+    float x_ds;
+    float y_ds;
+    float z_ds;
     while (1)
     {
         err = get_accel_g_data(&x_g, &y_g, &z_g);
-        err = get_gyro_ds_data(&x_g, &y_g, &z_g);
+        err = get_gyro_ds_data(&x_ds, &y_ds, &z_ds);
         if (err)
         {
             printf("an error occured\n");
         }
         else
         {
-            printf("x_g = [%f] y_g = [%f] z_g = [%f]\n",x_g, y_g, z_g);
+            /* printf("x_g = [%f] y_g = [%f] z_g = [%f]\n",x_g, y_g, z_g); */
+            printf("x_ds = [%f] y_ds = [%f] z_ds = [%f]\n",x_ds, y_ds, z_ds);
         }
     }
     return (0);

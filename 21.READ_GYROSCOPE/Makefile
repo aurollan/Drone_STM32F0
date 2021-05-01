@@ -13,7 +13,7 @@ CORTEX_M = 0
 CORE = CM$(CORTEX_M)
 
 # Project name
-NAME = READ_ACC-$(CORE).elf
+NAME = READ_GYR-$(CORE).elf
 
 # Compiler, Linker & Debugger
 CC = arm-none-eabi-gcc
