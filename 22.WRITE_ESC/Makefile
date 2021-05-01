@@ -73,10 +73,13 @@ vpath %.c src/mcu/pwm/sensor_interface
 vpath %.c src/sensors/
 vpath %.c src/sensors/inertial_measurement_unit/
 vpath %.c src/sensors/inertial_measurement_unit/mapping_and_configuration/
-vpath %.c src/sensors/inertial_measurement_unit/bus_interface/
+vpath %.c src/sensors/inertial_measurement_unit/mcu_interface/
 vpath %.c src/sensors/inertial_measurement_unit/application_interface/accelerometer/
 vpath %.c src/sensors/inertial_measurement_unit/application_interface/gyroscope/
 vpath %.c src/sensors/motors/
+vpath %.c src/sensors/motors/mcu_interface/
+vpath %.c src/sensors/motors/application_interface/
+vpath %.c src/sensors/motors/mapping_and_configuration/
 
 # For application part
 
@@ -110,7 +113,11 @@ FILE_SRC = main.c \
 		   system_stm32f0xx.c \
 		   gyroscope.c \
 		   accelerometer.c \
-		   imu_bus_interface.c \
+		   imu_mcu.c \
+		   power.c \
+		   motors_mcu.c \
+
+
 	
 
 FILE_OBJ = $(FILE_SRC:.c=.o)

@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "sensors/inertial_measurement_unit/bus_interface/imu_bus_interface.h"
+#include "sensors/inertial_measurement_unit/mcu_interface/imu_mcu.h"
 #include "sensors/inertial_measurement_unit/mapping_and_configuration/gy-521_register_map.h"
 #include "sensors/inertial_measurement_unit/mapping_and_configuration/gy-521_configuration_map.h"
 

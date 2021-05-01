@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "mapping_and_configuration/gy-521_register_map.h"
 #include "mapping_and_configuration/gy-521_configuration_map.h"
-#include "bus_interface/imu_bus_interface.h"
+#include "mcu_interface/imu_mcu.h"
 
 const uint8_t accel_scale_config = ACCEL_CONFIG_2G;
 const uint8_t gyro_scale_config  = GYRO_CONFIG_250;

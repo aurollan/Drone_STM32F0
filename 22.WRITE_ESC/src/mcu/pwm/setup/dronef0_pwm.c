@@ -1,8 +1,9 @@
 #include "dronef0_pwm.h"
 
+const uint32_t second_in_us = 1000000;
 const uint16_t max_duty_cycle = 2000;
-
 const uint32_t second_in_ms = 1000;
+
 uint16_t clock_frequency_to_ms(void)
 {
     uint16_t prescaler;
@@ -20,7 +21,6 @@ uint16_t clock_frequency_to_ms(void)
 
 }
 
-const uint32_t second_in_us = 1000000;
 uint16_t clock_frequency_to_us(void)
 {
     uint16_t            prescaler;
@@ -143,43 +143,3 @@ void pwm_initialize(void)
     TIM_Cmd(TIM3, ENABLE);
 }
 
-/**
- * @brief   Set speed as persent of available power.
- *          Regarding our available range to handle speed (from 1 to 2 ms)
- *          we translate speed in micro second duty cycle.
- * @param   percentage uint8_t. Speed in percent of power
- * @return  Nothing
- */
-void set_duty_cycle(uint16_t TIM_Channel, uint8_t percentage)
-{
-    uint32_t percentage_in_us;
-
-    percentage_in_us = 0;
-    if (percentage > 100)
-    {
-        /**
-         * Prevent max_duty_cycle overflow
-         */
-        percentage = 100;
-    }
-    percentage_in_us =  max_duty_cycle / 100;
-    percentage_in_us *= percentage;
-
-    switch (TIM_Channel)
-    {
-        case TIM_Channel_1:
-            TIM_SetCompare1(TIM3, percentage_in_us);
-            break;
-        case TIM_Channel_2:
-            TIM_SetCompare2(TIM3, percentage_in_us);
-            break;
-        case TIM_Channel_3:
-            TIM_SetCompare3(TIM3, percentage_in_us);
-            break;
-        case TIM_Channel_4:
-            TIM_SetCompare4(TIM3, percentage_in_us);
-            break;
-        default:
-            break;
-    }
-}
