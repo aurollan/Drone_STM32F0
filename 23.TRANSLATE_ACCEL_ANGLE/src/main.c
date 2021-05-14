@@ -57,7 +57,7 @@ int main(void) {
         }
         else
         {
-            printf("x_g = [%f] y_g = [%f] z_g = [%f]\n",x_g, y_g, z_g);
+            // printf("x_g = [%f] y_g = [%f] z_g = [%f]\n",x_g, y_g, z_g);
             //x_a = acosf(x_g);
             //y_a = acosf(y_g);
             //z_a = acosf(z_g);
@@ -66,33 +66,36 @@ int main(void) {
             y_squared  = y_g * y_g;
             z_squared  = z_g * z_g;
 
-            printf("x_squared = [%f]\n", x_squared);
-            printf("y_squared = [%f]\n", y_squared);
-            printf("z_squared = [%f]\n", z_squared);
+            //printf("x_squared = [%f]\n", x_squared);
+            //printf("y_squared = [%f]\n", y_squared);
+            //printf("z_squared = [%f]\n", z_squared);
 
             x_multiplication = y_squared + z_squared;
             y_multiplication = x_squared + z_squared;
 
-            printf("x_multiplication = [%f]\n", x_multiplication);
-            printf("y_multiplication = [%f]\n", y_multiplication);
+            // printf("x_multiplication = [%f]\n", x_multiplication);
+            // printf("y_multiplication = [%f]\n", y_multiplication);
 
             x_sqrt = sqrtf(x_multiplication);
             y_sqrt = sqrtf(y_multiplication);
 
-            printf("x_sqrt = [%f]\n", x_sqrt);
-            printf("y_sqrt = [%f]\n", y_sqrt);
+            // printf("x_sqrt = [%f]\n", x_sqrt);
+            // printf("y_sqrt = [%f]\n", y_sqrt);
 
             x_div = x_g / x_sqrt;
             y_div = y_g / y_sqrt;
-            printf("x_division = [%f]\n", x_div);
-            printf("y_division = [%f]\n", y_div);
+            // printf("x_division = [%f]\n", x_div);
+            // printf("y_division = [%f]\n", y_div);
 
 
             x_atanf = atanf(x_div);
             y_atanf = atanf(y_div);
 
-            printf("x_atanf = [%f]\n", x_atanf);
-            printf("y_atanf = [%f]\n", y_atanf);
+            (void)x_atanf;
+            (void)y_atanf;
+
+            // printf("x_atanf = [%f]\n", x_atanf);
+            // printf("y_atanf = [%f]\n", y_atanf);
 
             x_a = atanf(x_g / (sqrtf(y_g * y_g + z_g * z_g))) * 180.0 / PI;
             y_a = atanf(y_g / (sqrtf(x_g * x_g + z_g * z_g))) * 180.0 / PI;
