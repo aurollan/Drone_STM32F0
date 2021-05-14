@@ -1,10 +1,6 @@
-#include "stm32f0xx_i2c.h"
-#include "stm32f0xx_usart.h"
-#include "stm32f0xx_tim.h"
 #include "mcu/clock/setup/dronef0_clock.h"
 #include "mcu/uart/setup/dronef0_uart.h"
 #include "mcu/i2c/setup/dronef0_i2c.h"
-
 
 /**
  * Communication bus used
@@ -23,7 +19,6 @@
  * GPIOB 00 => TIM3_CH3
  * GPIOB 01 => TIM3_CH4
  */
-const TIM_TypeDef*   MOTORS      = TIM3;
 
 
 void    init_mcu(void)
