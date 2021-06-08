@@ -90,4 +90,37 @@ uint32_t get_gyro_ds_data(float *x_degree_second, float *y_degree_second, float 
     return (ret);
 }
 
+uint32_t    get_gyro_angles(float *x_angle_rotation,
+                            float *y_angle_rotation,
+                            float *z_angle_rotation)
+{
+    float               x_degree_second;
+    float               y_degree_second;
+    float               z_degree_second;
+    uint32_t            err;
+    uint32_t            time_delta_us;
+    uint32_t            new_timestamp_us;
+    static  uint32_t    last_timestamp_us;
+
+    err = 0;
+    if (0 == last_timestamp_us)
+    {
+        last_timestamp_us = get_timestamp_us();
+        *x_angle_rotation = 0;
+        *y_angle_rotation = 0;
+        *z_angle_rotation = 0;
+        return (err);
+    }
+    err = get_gyro_ds_data(&x_degree_second, &y_degree_second, &z_degree_second);
+    new_timestamp_us  = get_timestamp_us();
+    time_delta_us     = new_timestamp_us - last_timestamp_us;
+    last_timestamp_us = new_timestamp_us;
+
+    *x_angle_rotation = ((float)time_delta_us / 1000000.0f) * x_degree_second;
+    *y_angle_rotation = ((float)time_delta_us / 1000000.0f) * x_degree_second;
+    *z_angle_rotation = ((float)time_delta_us / 1000000.0f) * x_degree_second;
+
+    return (err);
+}
+
 

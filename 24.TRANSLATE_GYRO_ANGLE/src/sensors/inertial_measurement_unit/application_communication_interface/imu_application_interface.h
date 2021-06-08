@@ -23,3 +23,5 @@ uint32_t get_accel_g_data(float *x_g, float *y_g, float *z_g);
  * @return  0 if everything went right, another value otherwise
  */
 uint32_t get_gyro_ds_data(float *x_degree_second, float *y_degree_second, float *z_degree_second);
+
+uint32_t    get_gyro_angles(float *x_angle, float *y_angle, float *z_angle);

@@ -32,20 +32,26 @@ int main(void) {
         while(1);
     }
     //uint8_t buffer[6];
-    float x_ds;
-    float y_ds;
-    float z_ds;
+    float x_angle = 0;
+    float y_angle = 0;
+    float z_angle = 0;
+
+    float x_angle_rotation = 0;
+    float y_angle_rotation = 0;
+    float z_angle_rotation = 0;
     while (1)
     {
-        err = get_gyro_ds_data(&x_ds, &y_ds, &z_ds);
+        err = get_gyro_ds_data(&x_angle_rotation, &y_angle_rotation, &z_angle_rotation);
         if (err)
         {
             printf("an error occured\n");
         }
         else
         {
-            /* printf("x_g = [%f] y_g = [%f] z_g = [%f]\n",x_g, y_g, z_g); */
-            printf("x_ds = [%f] y_ds = [%f] z_ds = [%f]\n",x_ds, y_ds, z_ds);
+            x_angle += x_angle_rotation;
+            y_angle += y_angle_rotation;
+            z_angle += z_angle_rotation;
+            printf("x_angle = [%f] y_angle = [%f] z_angle = [%f]\n",x_angle, y_angle, z_angle);
         }
     }
     return (0);

@@ -61,6 +61,7 @@ vpath %.c src/mcu/
 vpath %.c src/mcu/setup_uart/
 vpath %.c src/mcu/setup_clock/
 vpath %.c src/mcu/setup_i2c/
+vpath %.c src/mcu/setup_timer/
 vpath %.c src/sensors/inertial_measurement_unit/
 vpath %.c src/sensors/inertial_measurement_unit/mapping_and_configuration/
 vpath %.c src/sensors/inertial_measurement_unit/bus_communication_interface/
@@ -82,6 +83,7 @@ FILE_SRC = main.c \
 		   init_mcu.c \
 		   dronef0_clock.c \
 		   dronef0_uart.c \
+		   dronef0_timer.c \
 		   dronef0_uart_tx_rx.c \
 		   dronef0_i2c.c \
 		   dronef0_i2c_rd_wr.c \

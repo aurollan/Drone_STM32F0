@@ -1,5 +1,21 @@
 #include "mcu/setup_i2c/dronef0_i2c.h"
+#include "mcu/setup_timer/dronef0_timer.h"
 #include "sensors/inertial_measurement_unit/mapping_and_configuration/gy-521_register_map.h"
+
+/**
+ * @brief   Get the timestamp in us
+ *
+ * @return  timestamp value in us
+ */
+uint32_t get_timestamp_us(void)
+{
+    uint32_t timestamp;
+
+    timestamp = get_counter_us();
+
+    return (timestamp);
+}
+
 
 /**
  * @brief   Set the specified register with configuration chosed

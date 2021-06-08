@@ -3,6 +3,13 @@
 #include <stdint.h>
 
 /**
+ * @brief   Get the timestamp in us
+ *
+ * @return  timestamp value in us
+ */
+uint32_t    get_timestamp_us(void);
+    
+/**
  * @brief   Set the specified register with configuration chosed
  *
  * @param   register_to_set : The register address we want to configure
@@ -10,7 +17,7 @@
  *
  * @return  0 if everything went right, another value otherwise
  */
-uint32_t set_register_config(uint8_t register_to_set, uint8_t configuration);
+uint32_t    set_register_config(uint8_t register_to_set, uint8_t configuration);
 
 /**
  * @brief   Get the specified register configuration
