@@ -1,3 +1,4 @@
+#include "stdio.h"
 #include "mcu/setup_i2c/dronef0_i2c.h"
 #include "mcu/setup_timer/dronef0_timer.h"
 #include "sensors/inertial_measurement_unit/mapping_and_configuration/gy-521_register_map.h"
@@ -7,11 +8,11 @@
  *
  * @return  timestamp value in us
  */
-uint32_t get_timestamp_us(void)
+uint16_t get_timestamp_ms(void)
 {
-    uint32_t timestamp;
+    uint16_t timestamp;
 
-    timestamp = get_counter_us();
+    timestamp = get_counter_ms();
 
     return (timestamp);
 }

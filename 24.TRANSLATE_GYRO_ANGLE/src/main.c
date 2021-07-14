@@ -6,6 +6,7 @@
 #include "mcu/init_mcu.h"
 #include "sensors/inertial_measurement_unit/bus_communication_interface/imu_bus_interface.h"
 
+#include "mcu/setup_timer/dronef0_timer.h"
 #include <stdio.h>
 
 void assert_failed(uint8_t* file, uint32_t line) {
@@ -41,7 +42,10 @@ int main(void) {
     float z_angle_rotation = 0;
     while (1)
     {
-        err = get_gyro_ds_data(&x_angle_rotation, &y_angle_rotation, &z_angle_rotation);
+        volatile uint16_t time;
+        time = get_counter_ms();
+        while (time + 1000 > get_counter_ms()) {};
+        err = get_gyro_angles(&x_angle_rotation, &y_angle_rotation, &z_angle_rotation);
         if (err)
         {
             printf("an error occured\n");

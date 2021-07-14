@@ -3,6 +3,7 @@
 #include "mapping_and_configuration/gy-521_configuration_map.h"
 #include "bus_communication_interface/imu_bus_interface.h"
 
+uint32_t    gyro_calibration();
 const uint8_t accel_scale_config = ACCEL_CONFIG_2G;
 const uint8_t gyro_scale_config  = GYRO_CONFIG_250;
 
@@ -42,6 +43,8 @@ uint32_t init_inertial_measurement_unit(void)
     ret |= set_register_config(PWR_MGMT_1, PWR_CLK_SEL_GYR_X);
     get_register_config(PWR_MGMT_1, &test);
     printf("PWR_MGMT_1 expected = [%x] and get [%x]\n", PWR_CLK_SEL_GYR_X , test);
+
+    gyro_calibration();
 
     return (ret);
 }

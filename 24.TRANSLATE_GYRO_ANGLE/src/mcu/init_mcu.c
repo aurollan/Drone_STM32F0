@@ -4,6 +4,7 @@
 #include "mcu/setup_clock/dronef0_clock.h"
 #include "mcu/setup_uart/dronef0_uart.h"
 #include "mcu/setup_i2c/dronef0_i2c.h"
+#include "mcu/setup_timer/dronef0_timer.h"
 
 
 /**
@@ -34,5 +35,6 @@ void    init_mcu(void)
     clock_initialize();
     uart_initialize();
     i2c_initialize();
+    timer_initialize();
     return ;
 }

@@ -88,6 +88,7 @@ FILE_SRC = main.c \
 		   dronef0_i2c.c \
 		   dronef0_i2c_rd_wr.c \
            stm32f0xx_rcc.c \
+           stm32f0xx_tim.c \
            stm32f0xx_i2c.c \
            stm32f0xx_usart.c \
            stm32f0xx_gpio.c \
@@ -132,7 +133,7 @@ INC_FLAGS = $(INC_LOCAL_FLAG) $(INC_DEVICE_FLAG) $(INC_CORTEX_FLAG) \
 			$(INC_STD_LIB_FLAG) $(INC_STD_LIB_CONF_FLAG)
 
 # DEFINE/MACRO flags
-DM_FLAGS = -DSTM32F030X8
+DM_FLAGS = -DSTM32F030X8 -DARM_MATH_CM0
 
 # Both following define come together (for using FULL_ASSERT)
 DM_FLAGS += -DUSE_FULL_ASSERT

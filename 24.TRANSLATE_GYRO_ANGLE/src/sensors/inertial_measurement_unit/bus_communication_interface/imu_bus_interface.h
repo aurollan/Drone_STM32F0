@@ -7,7 +7,7 @@
  *
  * @return  timestamp value in us
  */
-uint32_t    get_timestamp_us(void);
+uint16_t    get_timestamp_ms(void);
     
 /**
  * @brief   Set the specified register with configuration chosed
